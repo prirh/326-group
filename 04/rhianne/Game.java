@@ -17,7 +17,8 @@ public class Game {
     int rulesCount = rules.split(System.getProperty("line.separator")).length;
 
     rules = new Move[rulesCount];
-    
+
     pretzelsLeft = pretzels;
     peanutsLeft = peanuts;
   }
+}
