@@ -10,10 +10,17 @@ import java.util.*;
  **/
 public class Move {
 
-  int[] peanuts;
-  int[] pretzels;
+  char peanutsOperator;
+  int peanuts;
+
+  char pretzelsOperator;
+  int pretzels;
 
   public Move(String move) {
-    peanutsLeft = peanuts;
+    peanutsOperator = move.charAt(0);
+    peanuts = move.charAt(1);
+
+    pretzelsOperator = move.charAt(3);
+    peanuts = move.charAt(4);
   }
 }
