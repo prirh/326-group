@@ -31,4 +31,11 @@ public class Move {
     move.append(pretzelsOperator).append(pretzels);
     return move.toString();
   }
+
+  public String asSolution() {
+    if (peanutsOperator == '=' && pretzelsOperator == '=') {
+      return peanuts + " " + pretzels;
+    }
+    return "error: not a solution";
+  }
 }

@@ -12,10 +12,9 @@ public class Game {
 
   private static final int PLAYER_ONE = 0;
   private static final int PLAYER_TWO = 1;
+  private static final Move YOU_LOSE = new Move("=0 =0");
 
-  private final int PEANUTS;
-  private final int PRETZELS;
-  private int peanutsLeft, pretzelsLeft;
+  private final int PEANUTS, PRETZELS;
   private Move[] rules;
 
   public Game(String game) {
@@ -24,9 +23,6 @@ public class Game {
 
     PEANUTS = scanner.nextInt();
     PRETZELS = scanner.nextInt();
-
-    peanutsLeft = PEANUTS;
-    pretzelsLeft = PRETZELS;
 
     rules = new Move[rulesCount];
 
@@ -40,18 +36,15 @@ public class Game {
     }
   }
 
-  private String bestMove(int player) {
-    return "pretzelsLeft = " + pretzelsLeft + "peanutsLeft = " + peanutsLeft;
+  private Move bestMove(int peanutsLeft, int pretzelsLeft) {
+    return YOU_LOSE;
   }
 
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in).useDelimiter("\n\n");
     while(scanner.hasNext()) {
         Game game = new Game(scanner.next().trim());
-        for(Move rule : game.rules) {
-          System.out.println(rule.toString());
-        }
-        System.out.println(game.bestMove(PLAYER_ONE));
+        System.out.println(game.bestMove(game.PEANUTS, game.PRETZELS).asSolution());
     }
   }
 }
