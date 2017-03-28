@@ -18,9 +18,17 @@ public class Move {
 
   public Move(String move) {
     peanutsOperator = move.charAt(0);
-    peanuts = move.charAt(1);
+    peanuts = Character.getNumericValue(move.charAt(1));
 
     pretzelsOperator = move.charAt(3);
-    peanuts = move.charAt(4);
+    pretzels = Character.getNumericValue(move.charAt(4));
+  }
+
+  public String toString() {
+    StringBuilder move = new StringBuilder();
+    move.append(peanutsOperator).append(peanuts);
+    move.append(" ");
+    move.append(pretzelsOperator).append(pretzels);
+    return move.toString();
   }
 }
