@@ -54,6 +54,7 @@ public class Game {
         return YOU_LOSE;
     }
     public static int calc(int x2, int y2, Move[] rules,  int turn){
+        System.out.println("x: " + x2 + " y2: " + y2);
         // @param turn is always 1
         if(x2==0 &&y2==0){
             return 1 - turn;
@@ -66,16 +67,13 @@ public class Game {
             turn =1;
         }
         for(int val = 0; val < rules.length; val++){
-            if(rules[val].peanutsOperator == '>'){
-            }
         
             /* loop  ><, i=(totalx-rulex)*ruley-1, all division by ruleY, calc+ is rulesx +1;*/
 
             if(rules[val].peanutsOperator =='>'&& rules[val].pretzelsOperator=='<'){
-                System.out.println(x2);
                 for(int i=((x2-rules[val].peanuts)*rules[val].pretzels)-1; i>=0;i--){
-                    if(x2-((i/3)+rules[val].peanuts+1)>=0 && y2-i%rules[val].pretzels>=0){
-                        if(calc(x2-(i/rules[val].pretzels)+rules[val].peanuts+1,y2-i%rules[val].pretzels,rules,turn)==1){
+                    if(x2-((i/rules[val].pretzels)+rules[val].peanuts+1)>=0 && y2-i%rules[val].pretzels>=0){;  
+                        if(calc(x2-((i/rules[val].pretzels)+rules[val].peanuts+1),y2-i%rules[val].pretzels,rules,turn)==1){
                             result[0] = (i/rules[val].pretzels)+rules[val].peanuts+1;
                             result[1] = i%rules[val].pretzels;
                             return 1-turn;
@@ -88,6 +86,7 @@ public class Game {
                     }
                 }
             }
+        }
             
             
             /* loop  <<, i=rulex*ruley-1, all division by ruleY;*/
@@ -137,15 +136,16 @@ public class Game {
                     result[1]=0;
                     return 1-turn;
                 }
-                else if(y2>=1){
-                    if(calc(x2,y2-1,rules,turn)==1){
-                        result[0] =0;
-                        result[1]=1;
-                        return 1-turn;
-                    }
+            }
+            if(y2>=1){
+                if(calc(x2,y2-1,rules,turn)==1){
+                    result[0] =0;
+                    result[1]=1;
+                    return 1-turn;
                 }
             }
-        }
+            
+        
         return 0;
     }
         
