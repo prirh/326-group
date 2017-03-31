@@ -26,6 +26,14 @@ public class Move {
         pretzels = Integer.parseInt(splitMove[3]);
     }
 
+    public Move(int peanuts, int pretzel) {
+        peanuts = peanuts;
+        peanutsOperator = '=';
+
+        pretzels = pretzels;
+        pretzelsOperator = '=';
+    }
+
     public String toString() {
         StringBuilder move = new StringBuilder();
         move.append(peanutsOperator).append(peanuts);
