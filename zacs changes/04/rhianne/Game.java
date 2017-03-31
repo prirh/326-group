@@ -86,27 +86,31 @@ public class Game {
                     }
                 }
             }
-        }
+        
             
             
             /* loop  <<, i=rulex*ruley-1, all division by ruleY;*/
-            /* for(int i=rulex*ruley-1; i>=0;i--){
-               System.out.println((i/ruley) +  " and: "+ i%ruley + "this:" + i);
-               if(calc(x2-((i/ruley),y2-i%ruley,turn)==1){
-               result[0] = (i/ruley);
-               result[1] = i%ruley;
-               return 1-turn;
-               }
-               }*/
+            if(rules[val].peanutsOperator=='<' && rules[val].pretzelsOperator=='<'){
+                for(int i=rules[val].peanuts*rules[val].pretzels-1; i>=0;i--){
+                    if(calc(x2-(i/rules[val].pretzels),y2-i%rules[val].pretzels,turn)==1){
+                        result[0] = (i/rules[val].pretzels);
+                        result[1] = i%rules[val].pretzels;
+                        return 1-turn;
+                    }
+                    else if(turn ==1){
+                        return 0;
+                    }
+                }
+            }
+            
             
             /* loop  >>, i=(totalx-rulex)*(totaly-ruley)-1, all division by ruleY, calc+ is rulesx +1;*/
             
             /*System.out.println("x2: "+ x2 +" y2: "+ y2);
-              for(int i=(totalx-rulex)*ruley-1; i>=0;i--){
-              System.out.println((i/ruley)+(ruley+1) + " and: "+ i%ruley+(rulex+1) + "this:" + i);
-              if(calc(x2-((i/ruley)+ruley+1),y2-i%ruley+rulex+1,turn)==1){
-              result[0] = (i/ruley)+ruley+1;
-              result[1] = i%ruley+rulex+1;
+              for(int i=(x2-rules[val].peanuts)*rules[val].pretzels-1; i>=0;i--){
+              if(calc(x2-((i/rules[val].pretzels)+rules[val].peanuts+1),y2-i%rules[val.pretzels]+rules[val].pretzels+1,turn)==1){
+              result[0] = (i/rules[val].pretzels)+rules[val].peanuts+1;
+              result[1] = i%rules[val].pretzels+rules[val].pretzels+1;
               return 1-turn;
               }
               }*/
@@ -130,6 +134,7 @@ public class Game {
                }
                
                }*/
+        }
             if(x2>=1){
                 if(calc(x2-1,y2,rules,turn)==1){
                     result[0] =1;
