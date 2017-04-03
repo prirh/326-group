@@ -10,32 +10,42 @@ import java.util.*;
  **/
 public class Move {
 
-  char peanutsOperator;
-  int peanuts;
+    char peanutsOperator;
+    int peanuts;
 
-  char pretzelsOperator;
-  int pretzels;
+    char pretzelsOperator;
+    int pretzels;
 
-  public Move(String move) {
-    peanutsOperator = move.charAt(0);
-    peanuts = Character.getNumericValue(move.charAt(1));
+    public Move(String move) {
+        // separates the string into operator, number, space, operator, number
+        String[] splitMove = move.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+        peanutsOperator = splitMove[0].charAt(0);
+        peanuts = Integer.parseInt(splitMove[1]);
 
-    pretzelsOperator = move.charAt(3);
-    pretzels = Character.getNumericValue(move.charAt(4));
-  }
-
-  public String toString() {
-    StringBuilder move = new StringBuilder();
-    move.append(peanutsOperator).append(peanuts);
-    move.append(" ");
-    move.append(pretzelsOperator).append(pretzels);
-    return move.toString();
-  }
-
-  public String asSolution() {
-    if (peanutsOperator == '=' && pretzelsOperator == '=') {
-      return peanuts + " " + pretzels;
+        pretzelsOperator = splitMove[2].charAt(1); // charAt(1) to jump the space
+        pretzels = Integer.parseInt(splitMove[3]);
     }
-    return "error: not a solution";
-  }
+
+    public Move(int peanuts, int pretzel) {
+        peanuts = peanuts;
+        peanutsOperator = '=';
+
+        pretzels = pretzels;
+        pretzelsOperator = '=';
+    }
+
+    public String toString() {
+        StringBuilder move = new StringBuilder();
+        move.append(peanutsOperator).append(peanuts);
+        move.append(" ");
+        move.append(pretzelsOperator).append(pretzels);
+        return move.toString();
+    }
+
+    public String asSolution() {
+        if (peanutsOperator == '=' && pretzelsOperator == '=') {
+            return peanuts + " " + pretzels;
+        }
+        return "error: not a solution";
+    }
 }
