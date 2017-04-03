@@ -1,4 +1,4 @@
-pretzelsLeftpackage etude04;
+package etude04;
 import java.util.*;
 /**
  * Game.java
@@ -68,11 +68,11 @@ public class Game {
 
             /* loop  ><, i=(totalx-rulex)*ruley-1, all division by ruleY, calc+ is rulesx +1;*/
 
-            if(rules[val].peanutsOperator == '>' && rules[val].pretzelsOperator == '<'){
-                for(int i = ((peanutsLeft-rules[val].peanuts)*rules[val].pretzels) - 1; i >= 0; i--){
-                    if(peanutsLeft-((i/rules[val].pretzels)+rules[val].peanuts+1)>=0 && pretzelsLeft-i%rules[val].pretzels>=0){;
-                        if(calc(peanutsLeft-((i/rules[val].pretzels)+rules[val].peanuts+1),pretzelsLeft-i%rules[val].pretzels,rules,turn)==1){
-                            winningMove = new Move((i/rules[val].pretzels)+ rules[val].peanuts + 1, i%rules[val].pretzels);
+            if(rules[val].peanutsOperator == '>' && rules[val].pretzelsOperator == '<') {
+                for(int i = ((peanutsLeft - rules[val].peanuts) * rules[val].pretzels) - 1; i >= 0; i--) {
+                    if(peanutsLeft - ((i/rules[val].pretzels) + rules[val].peanuts + 1) >= 0 && pretzelsLeft - i % rules[val].pretzels >= 0) {
+                        if(calc(peanutsLeft-((i/rules[val].pretzels) + rules[val].peanuts + 1), pretzelsLeft-i%rules[val].pretzels, turn) == 1) {
+                            winningMove = new Move((i/rules[val].pretzels)+ rules[val].peanuts + 1, i % rules[val].pretzels);
                             return 1 - turn;
                         }
                         else if(turn == 1){
@@ -140,9 +140,7 @@ public class Game {
                     }
                 }
             }
-
-
-        return 0;
     }
-
+        return 0;
+}
 }
