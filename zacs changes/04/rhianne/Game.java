@@ -13,7 +13,7 @@ public class Game {
     private static final int PLAYER_ONE = 0;
     private static final int PLAYER_TWO = 1;
     private static final Move YOU_LOSE = new Move("=1 =1");
-    private static Move winningMove;
+    private Move winningMove;
 
     private final int PEANUTS, PRETZELS;
     private Move[] rules;
@@ -24,8 +24,8 @@ public class Game {
         Scanner scanner = new Scanner(System.in).useDelimiter("\n\n");
         while(scanner.hasNext()) {
             Game game = new Game(scanner.next().trim());
-            game.calc(PEANUTS, PRETZELS, 1);
-            System.out.println(winningMove.asSolution());
+            game.calc(game.PEANUTS, game.PRETZELS, 1);
+            System.out.println(game.winningMove.asSolution());
         }
 
     }
@@ -47,14 +47,12 @@ public class Game {
         for(int i = 2; i < rulesCount; i++) {
             rules[i] = new Move(scanner.nextLine().trim());
         }
-        calc(PEANUTS, PRETZELS, 1);
-        System.out.println(result[0] + " " + result[1]);
     }
 
     private Move bestMove(int peanutsLeft, int pretzelsLeft) {
         return YOU_LOSE;
     }
-    public static int calc(int pretzelsLeft, int peanutsLeft, int turn){
+    public int calc(int pretzelsLeft, int peanutsLeft, int turn){
         // @param turn is always 1
         if(peanutsLeft == 0 && pretzelsLeft == 0){
             return 1 - turn;
@@ -128,15 +126,13 @@ public class Game {
                }*/
             if(peanutsLeft >= 1){
                 if(calc(peanutsLeft-1, pretzelsLeft,turn) == 1){
-                    result[0] =1;
-                    result[1]=0;
+                    winningMove = new Move(1, 0);
 
                     return 1 - turn;
                 }
                 else if(pretzelsLeft >= 1){
                     if(calc(peanutsLeft, pretzelsLeft-1, turn) == 1){
-                        result[0] =0;
-                        result[1]=1;
+                        winningMove = new Move(1, 0);
                         return 1 - turn;
                     }
                 }
