@@ -86,21 +86,26 @@ public class Game {
                     }
                 }
             }
-        
             
             
             /* loop  <<, i=rulex*ruley-1, all division by ruleY;*/
-            if(rules[val].peanutsOperator=='<' && rules[val].pretzelsOperator=='<'){
-                for(int i=rules[val].peanuts*rules[val].pretzels-1; i>=0;i--){
-                    if(calc(x2-(i/rules[val].pretzels),y2-i%rules[val].pretzels,turn)==1){
-                        result[0] = (i/rules[val].pretzels);
-                        result[1] = i%rules[val].pretzels;
-                        return 1-turn;
+            if(rules[val].peanutsOperator=='>' && rules[val].pretzelsOperator=='>'){
+               
+                // if(x2-rules[val].peanuts> y2-rules[val].pretzels){
+                    for(int i=rules[val].peanuts*rules[val].pretzels-1; i>=0;i--){
+                        if(x2-(i%rules[val].pretzels)>=0 && y2-(i/rules[val].pretzels)>=0){
+                            if(calc(x2-(i%rules[val].pretzels +rules[val].peanuts+1),y2-(i/rules[val].pretzels + rules[val].pretzels +1),rules,turn)==1){
+                                result[0] = i%rules[val].pretzels +rules[val].peanuts+1;
+                                result[1] = i/rules[val].pretzels + rules[val].pretzels+1; 
+                                return 1-turn;
+                            }
+                            else if(turn ==1){
+                                return 0;
+                            }
+                        }
                     }
-                    else if(turn ==1){
-                        return 0;
-                    }
-                }
+
+                    
             }
             
             
@@ -116,24 +121,41 @@ public class Game {
               }*/
             
             // IF RULE X IS < VALUE AND RULE Y = VALUE
-            /* for(int i=rulex; i<=0;i--){
-               if(calc(x2-i, y2-ruley) ==0{
-               result[0] = i
-               result[1] = ruley
-               return 1-turn;
-               }
-               
-               }*/
+            if(rules[val].peanutsOperator=='<' && rules[val].pretzelsOperator=='='){
+                
+                for(int i=rules[val].peanuts-1; i<0;i--){
+                    if(x2-i >=0 && rules[val].pretzels>=0){
+                        if(calc(x2-i, y2-rules[val].pretzels,rules,turn) ==0){
+                            result[0] = i;
+                            result[1] = rules[val].pretzels;
+                            return 1-turn;
+                        }
+                        else if(turn ==1){
+                            return 0;
+                        }
+                        
+                    }
+                }
+            }
             
             //if rule x > value and rule y = value
-            /* for(int i=(totalx - (rulex+1)); i<=0;i--){
-               if(calc(x2-i+rulex+1, y2-ruley) ==0{
-               result[0] = 1+rulex+1;
-               result[1] = i%ruley+rulex+1;
-               return 1-turn;
-               }
-               
-               }*/
+            if(rules[val].peanutsOperator=='>' && rules[val].pretzelsOperator=='='){
+
+                
+                for(int i=(x2 - (rules[val].peanuts+1)); i<=0;i--){
+                    if(x2-(i+rules[val].peanuts+1)>=0 && y2-rules[val].pretzels>=0){
+                        if(calc(x2-(i+rules[val].peanuts+1), y2-rules[val].pretzels,rules,turn) ==0){
+                            result[0] = i+rules[val].peanuts+1;
+                            result[1] = rules[val].pretzels;
+                            return 1-turn;
+                        }
+                        else if(turn==1){
+                            return 0;
+                        }
+                    }
+                    
+                }
+            }
         }
             if(x2>=1){
                 if(calc(x2-1,y2,rules,turn)==1){
