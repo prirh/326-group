@@ -110,15 +110,22 @@ public class Game {
             
             
             /* loop  >>, i=(totalx-rulex)*(totaly-ruley)-1, all division by ruleY, calc+ is rulesx +1;*/
-            
-            /*System.out.println("x2: "+ x2 +" y2: "+ y2);
-              for(int i=(x2-rules[val].peanuts)*rules[val].pretzels-1; i>=0;i--){
-              if(calc(x2-((i/rules[val].pretzels)+rules[val].peanuts+1),y2-i%rules[val.pretzels]+rules[val].pretzels+1,turn)==1){
-              result[0] = (i/rules[val].pretzels)+rules[val].peanuts+1;
-              result[1] = i%rules[val].pretzels+rules[val].pretzels+1;
-              return 1-turn;
-              }
-              }*/
+            if(rules[val].peanutsOperator=='<' && rules[val].pretzelsOperator=='<'){
+                for(int i=(rules[val].peanuts*rules[val].pretzels)-1; i>=0;i--){
+                    if(x2-(i/rules[val].pretzels) >=0 && y2-(i%rules[val].pretzels)>=0){
+                        
+                        System.out.println("xx2 " +((i/rules[val].pretzels)) + " yy " +((i%rules[val].pretzels)));
+                        if(calc(x2-((i/rules[val].pretzels)),y2-((i%rules[val].pretzels)),rules,turn)==1){
+                            result[0] = (i/rules[val].pretzels);
+                            result[1] = (i%rules[val].pretzels);
+                            return 1-turn;
+                        }
+                        else if(turn ==0){
+                            return 0;
+                        }
+                    }
+                }
+            }
             
             // IF RULE X IS < VALUE AND RULE Y = VALUE
             if(rules[val].peanutsOperator=='<' && rules[val].pretzelsOperator=='='){
