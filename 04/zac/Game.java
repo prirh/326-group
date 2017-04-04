@@ -1,3 +1,4 @@
+
 package etude04;
 import java.util.*;
 /**
@@ -13,7 +14,7 @@ public class Game {
     private static final int PLAYER_ONE = 0;
     private static final int PLAYER_TWO = 1;
     private static final Move YOU_LOSE = new Move("=1 =1");
-    private Move winningMove;
+    static int[] result ={0,0};
 
     private final int PEANUTS, PRETZELS;
     private Move[] rules;
@@ -24,8 +25,7 @@ public class Game {
         Scanner scanner = new Scanner(System.in).useDelimiter("\n\n");
         while(scanner.hasNext()) {
             Game game = new Game(scanner.next().trim());
-            game.calc(game.PEANUTS, game.PRETZELS, 1);
-            System.out.println(game.winningMove.asSolution());
+            //System.out.println(game.bestMove(game.PEANUTS, game.PRETZELS).asSolution());
         }
 
     }
@@ -47,37 +47,40 @@ public class Game {
         for(int i = 2; i < rulesCount; i++) {
             rules[i] = new Move(scanner.nextLine().trim());
         }
+        calc(PEANUTS, PRETZELS, rules, 1);
+        System.out.println(result[0] + " " + result[1]);
     }
 
     private Move bestMove(int peanutsLeft, int pretzelsLeft) {
         return YOU_LOSE;
     }
-
-    public int calc(int pretzelsLeft, int peanutsLeft, int turn){
+    public static int calc(int x2, int y2, Move[] rules,  int turn){
+        System.out.println("x: " + x2 + " y2: " + y2);
         // @param turn is always 1
-        System.out.println("peanuts: " + peanutsLeft + " pretzels: " + pretzelsLeft);
-
-        if(peanutsLeft == 0 && pretzelsLeft == 0){
+        if(x2==0 &&y2==0){
             return 1 - turn;
         }
-        else if(turn == 1){
-            turn = 0;
+
+        else if(turn ==1){
+            turn =0;
         }
-        else {
-            turn = 1;
+        else{
+            turn =1;
         }
         for(int val = 0; val < rules.length; val++){
 
             /* loop  ><, i=(totalx-rulex)*ruley-1, all division by ruleY, calc+ is rulesx +1;*/
 
-            if(rules[val].peanutsOperator == '>' && rules[val].pretzelsOperator == '<') {
-                for(int i = ((peanutsLeft - rules[val].peanuts) * rules[val].pretzels) - 1; i >= 0; i--) {
-                    if(peanutsLeft - ((i/rules[val].pretzels) + rules[val].peanuts + 1) >= 0 && pretzelsLeft - i % rules[val].pretzels >= 0) {
-                        if(calc(peanutsLeft-((i/rules[val].pretzels) + rules[val].peanuts + 1), pretzelsLeft-i%rules[val].pretzels, turn) == 1) {
-                            winningMove = new Move((i/rules[val].pretzels)+ rules[val].peanuts + 1, i % rules[val].pretzels);
-                            return 1 - turn;
+            if(rules[val].peanutsOperator =='>'&& rules[val].pretzelsOperator=='<'){
+                for(int i=((x2-rules[val].peanuts)*rules[val].pretzels)-1; i>=0;i--){
+                    if(x2-((i/rules[val].pretzels)+rules[val].peanuts+1)>=0 && y2-i%rules[val].pretzels>=0){;
+                        if(calc(x2-((i/rules[val].pretzels)+rules[val].peanuts+1),y2-i%rules[val].pretzels,rules,turn)==1){
+                            result[0] = (i/rules[val].pretzels)+rules[val].peanuts+1;
+                            result[1] = i%rules[val].pretzels;
+                            return 1-turn;
                         }
-                        else if(turn == 1){
+
+                        else if(turn ==1){
                             return 0;
 
                         }
@@ -85,11 +88,14 @@ public class Game {
                 }
             }
 
+
+
             /* loop  <<, i=rulex*ruley-1, all division by ruleY;*/
             if(rules[val].peanutsOperator=='<' && rules[val].pretzelsOperator=='<'){
                 for(int i=rules[val].peanuts*rules[val].pretzels-1; i>=0;i--){
-                    if(calc(peanutsLeft-(i/rules[val].pretzels),pretzelsLeft-i%rules[val].pretzels,turn)==1){
-                        winningMove = new Move(i/rules[val].pretzels, i%rules[val].pretzels);
+                    if(calc(x2-(i/rules[val].pretzels),y2-i%rules[val].pretzels,rules,turn)==1){
+                        result[0] = (i/rules[val].pretzels);
+                        result[1] = i%rules[val].pretzels;
                         return 1-turn;
                     }
                     else if(turn ==1){
@@ -112,7 +118,7 @@ public class Game {
 
             // IF RULE X IS < VALUE AND RULE Y = VALUE
             /* for(int i=rulex; i<=0;i--){
-               if(calc(peanutsLeft-i, pretzelsLeft-ruley) ==0{
+               if(calc(x2-i, y2-ruley) ==0{
                result[0] = i
                result[1] = ruley
                return 1-turn;
@@ -122,26 +128,31 @@ public class Game {
 
             //if rule x > value and rule y = value
             /* for(int i=(totalx - (rulex+1)); i<=0;i--){
-               if(calc(peanutsLeft-i+rulex+1, pretzelsLeft-ruley) ==0{
+               if(calc(x2-i+rulex+1, y2-ruley) ==0{
                result[0] = 1+rulex+1;
                result[1] = i%ruley+rulex+1;
                return 1-turn;
                }
 
                }*/
-           }
-            if(peanutsLeft >= 1){
-                if(calc(peanutsLeft - 1, pretzelsLeft, turn) == 1){
-                    winningMove = new Move(1, 0);
-                    return 1 - turn;
-                }
-            }
-            if(pretzelsLeft >= 1){
-                if(calc(peanutsLeft, pretzelsLeft - 1, turn) == 1){
-                    winningMove = new Move(0, 1);
-                    return 1 - turn;
-                }
-            }
-                    return 0;
         }
+            if(x2>=1){
+                if(calc(x2-1,y2,rules,turn)==1){
+                    result[0] =1;
+                    result[1]=0;
+                    return 1-turn;
+                }
+            }
+            if(y2>=1){
+                if(calc(x2,y2-1,rules,turn)==1){
+                    result[0] =0;
+                    result[1]=1;
+                    return 1-turn;
+                }
+            }
+
+
+        return 0;
     }
+
+}
