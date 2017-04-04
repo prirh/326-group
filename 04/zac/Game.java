@@ -150,8 +150,6 @@ public class Game {
                     return 1-turn;
                 }
             }
-
-
         return 0;
     }
 
