@@ -1,3 +1,8 @@
+/*******************************************************************************
+Authors: Caleb Mitchell, Rhianne Price, Erina Jeffery, Zac Gardner
+Etude 8: Access Points
+*******************************************************************************/
+
 import java.util.*;
 
 
