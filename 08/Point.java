@@ -5,19 +5,21 @@ import java.util.*;
 public class Point {
     final double X;
     final double Y;
-    ArrayList<double> distances;
+    ArrayList<Double> distances;
 
     public Point(double x, double y) {
         X = x;
         Y = y;
-        distances = new ArrayList<double>();
+        distances = new ArrayList<Double>();
     }
 
     public void addNeighbour(Point neighbour) {
+        
         distances.add(Math.hypot(X - neighbour.X, Y - neighbour.Y));
     }
 
     public double furthestNeighbour() {
-        return Collections.sort(distances).get(12);
+        Collections.sort(distances);
+        return distances.get(11);
     }
 }
