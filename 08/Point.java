@@ -14,12 +14,15 @@ public class Point {
     }
 
     public void addNeighbour(Point neighbour) {
-        
         distances.add(Math.hypot(X - neighbour.X, Y - neighbour.Y));
     }
 
     public double furthestNeighbour() {
         Collections.sort(distances);
         return distances.get(11);
+    }
+
+    public String toString() {
+        return X + " " + Y;
     }
 }
