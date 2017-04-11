@@ -30,20 +30,10 @@ public class Move {
         pretzels = Integer.parseInt(splitMove[3]);
     }
 
-<<<<<<< HEAD:04/rhianne/Move.java
-    public Move(int peanuts, int pretzel) {
-        peanuts = peanuts;
-        peanutsOperator = '=';
-
-        pretzels = pretzels;
-        pretzelsOperator = '=';
-    }
-
-=======
     /**
      * to String class reconstructs the input string 'move' and re outputs it.
      **/
->>>>>>> alot of comment and refactoring:zacs changes/04/rhianne/Move.java
+     
     public String toString() {
         StringBuilder move = new StringBuilder();
         move.append(peanutsOperator).append(peanuts);
