@@ -4,13 +4,13 @@ import java.util.*;
 
 public class Map {
     Point[] points;
-    double[] distances;
+    ArrayList<Double> distances;
     final int NUMBER_OF_POINTS;
 
     public Map(ArrayList<String> points) {
         Scanner scanner;
         NUMBER_OF_POINTS = points.size();
-        distances = new double[NUMBER_OF_POINTS];
+        distances = new ArrayList<Double>();
         this.points = new Point[NUMBER_OF_POINTS];
 
         for(int i = 0; i < NUMBER_OF_POINTS; i++) {
@@ -22,11 +22,16 @@ public class Map {
             for(int j = 0; j < NUMBER_OF_POINTS; j++) {
                 this.points[i].addNeighbour(this.points[j]);
             }
-            distances[i] = (this.points[i].furthestNeighbour());
+            distances.add(this.points[i].furthestNeighbourDistance());
         }
     }
 
+    public String neighbours() {
+        Point firstPoint = points[distances.lastIndexOf(getMaxRange())];
+        return "(" + firstPoint.toString() + ") (" + firstPoint.furthestNeighbour().toString() + ")";
+    }
+
     public double getMaxRange(){
-        return Collections.min(Arrays.asList(distances));
+        return Collections.max(distances);
     }
 }

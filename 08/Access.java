@@ -25,6 +25,8 @@ public class Access{
         }
         Map map = new Map(coords);
         System.out.println(map.getMaxRange());
+        System.out.println(map.neighbours());
+        System.out.println(map.distances.toString());
     }
 
     /* getX takes a string of 2 coordinates in format "east north"

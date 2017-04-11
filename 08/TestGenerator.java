@@ -16,6 +16,10 @@ public class TestGenerator{
         System.out.println("Access points");
 
         for(int i = 0; i < NUMBER_OF_POINTS; i++) {
+            System.out.println(i + "0");
+        }
+
+        for(int i = 0; i < NUMBER_OF_POINTS; i++) {
             points[i] = new Point(ORIGIN.X + RADIUS * Math.cos(t), ORIGIN.Y + RADIUS * Math.sin(t));
             System.out.println(points[i].toString());
             t += slice;
