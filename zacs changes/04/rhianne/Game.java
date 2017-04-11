@@ -44,7 +44,7 @@ public class Game {
         result[0] =0;
         result[1] =0;
         preCalc(PEANUTS, PRETZELS, rules);
-            System.out.println(result[0] + " " + result[1]);
+        System.out.println(result[0] + " " + result[1]);
     }
     
     private Move bestMove(int peanutsLeft, int pretzelsLeft) {
@@ -101,6 +101,7 @@ public class Game {
         int alty;
         if(x2==0 &&y2==0){
             return 1 - turn;
+            
         }
         
         else if(turn ==1){
@@ -125,17 +126,20 @@ public class Game {
                                 result[0] =altx;
                                 result[1] =alty;
                                 return 1;
+                            }else if(turn ==0){
+                                return 1;
                             }
+                        }
                         
                         
-                            else if(turn ==1){
-                                return 0;
+                        else if(turn ==1){
+                            return 0;
                             
-                            }
                         }
                     }
                 }
             }
+            
             
             
             /* loop  <<, i=rulex*ruley-1, all division by ruleY;*/
@@ -153,6 +157,9 @@ public class Game {
                             if(turnNo==0){
                                 result[0] = altx;
                                 result[1] = alty;
+                                return 1;
+                            }
+                            else if(turn ==0){
                                 return 1;
                             }
                         }
@@ -180,6 +187,9 @@ public class Game {
                                 result[1] = alty;
                                 return 1;
                             }
+                            else if(turn ==0){
+                                return 1;
+                            }
                         }
                         else if(turn ==1){
                             return 0;
@@ -192,16 +202,18 @@ public class Game {
             // IF RULE X IS < VALUE AND RULE Y = VALUE
             else if(rules[c].peanutsOperator=='<'
                     && rules[c].pretzelsOperator=='='){
-                
-                for(int i=rules[c].peanuts-1; i<0;i--){
+                for(int i=rules[c].peanuts-1; i>0;i--){
                     alty =rules[c].pretzels;
-                    if(x2-i >=0 &&alty>=0){
+                    if(x2-i >=0 &&y2-alty>=0){
                         if(calc(x2-i, y2-alty,rules,turn,turnNo+1) ==1){
                             if(turnNo==0){
                                 result[0] = i;
                                 result[1] = alty;
                                 return 1;
                                 
+                            }
+                            else if(turn ==0){
+                                return 1;
                             }
                         }else if(turn ==1){
                             return 0;
@@ -217,13 +229,14 @@ public class Game {
 
                 
                 for(int i=(x2 - (rules[c].peanuts+1)); i>=0;i--){
-                    System.out.println("x2 " +(i+rules[c].peanuts+1) + " y2: " + (rules[c].pretzels));
                     if(x2-(i+rules[c].peanuts+1)>=0 && y2-rules[c].pretzels>=0){
                         if(calc(x2-(i+rules[c].peanuts+1), y2-rules[c].pretzels,rules,turn,turnNo+1) ==1){
-                            System.out.println("done");
                             if(turnNo==0){
                                 result[0] = i+rules[c].peanuts+1;
                                 result[1] = rules[c].pretzels;
+                                return 1;
+                            }
+                            else if(turn ==0){
                                 return 1;
                             }
                         }
@@ -244,6 +257,8 @@ public class Game {
                             result[0]=rules[c].peanuts;
                             result[1] = rules[c].pretzels;
                             return 1;
+                        }else if(turn ==0){
+                            return 1;
                         }
                     }
                     else if(turn==1){
@@ -263,7 +278,11 @@ public class Game {
                     result[1]=0;
                     return 1;
                 }
-            
+                else if(turn ==0){
+                    return 1;
+                }
+            }
+            else if(turn ==1){
                 return 0;
             }
         }
@@ -273,18 +292,17 @@ public class Game {
                     result[0] =0;
                     result[1]=1;
                     return 1;
+                }else if(turn ==0){
+                    return 1;
                 }
-                
+            }
+            else if(turn ==1){
                 return 0;
             }
         }
         if(turn ==1){
             return 1;
         }
-        
-           
-        
         return 0;
     }
 }
-
