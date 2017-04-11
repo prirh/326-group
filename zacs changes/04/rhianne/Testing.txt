@@ -1,0 +1,1 @@
+testing has been done involving multiple cases for each rules type with successful results for all.
