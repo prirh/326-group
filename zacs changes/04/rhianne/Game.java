@@ -5,7 +5,7 @@ import java.util.*;
  * COSC326 Etude 4
  * Peanuts and Pretzels
  *
- * @author Rhianne Price, Zac Gardner, 
+ * @author Rhianne Price, Zac Gardner, Erina Jeffery,
  * February 2017
  **/
 public class Game {
@@ -216,14 +216,14 @@ public class Game {
                     && rules[c].pretzelsOperator=='='){
 
                 
-                for(int i=(x2 - (rules[c].peanuts+1)); i<=0;i--){
+                for(int i=(x2 - (rules[c].peanuts+1)); i>=0;i--){
+                    System.out.println("x2 " +(i+rules[c].peanuts+1) + " y2: " + (rules[c].pretzels));
                     if(x2-(i+rules[c].peanuts+1)>=0 && y2-rules[c].pretzels>=0){
                         if(calc(x2-(i+rules[c].peanuts+1), y2-rules[c].pretzels,rules,turn,turnNo+1) ==1){
+                            System.out.println("done");
                             if(turnNo==0){
                                 result[0] = i+rules[c].peanuts+1;
                                 result[1] = rules[c].pretzels;
-                            }
-                            if(turn==0){
                                 return 1;
                             }
                         }
@@ -263,7 +263,7 @@ public class Game {
                     result[1]=0;
                     return 1;
                 }
-               
+            
                 return 0;
             }
         }
