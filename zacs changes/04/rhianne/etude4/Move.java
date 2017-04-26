@@ -15,7 +15,6 @@ public class Move {
 
     char pretzelsOperator;
     int pretzels;
-    int reversed;
 
     /**
      *Move constructor class taking all needed information for a single rule.
@@ -29,7 +28,6 @@ public class Move {
 
         pretzelsOperator = splitMove[2].charAt(1); // charAt(1) to jump the space
         pretzels = Integer.parseInt(splitMove[3]);
-        reversed =0;
     }
 
     /**

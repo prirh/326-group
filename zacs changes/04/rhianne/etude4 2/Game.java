@@ -70,7 +70,6 @@ public class Game {
                 rules[val].pretzelsOperator = temp1;
                 rules[val].peanuts = rules[val].pretzels;
                 rules[val].pretzels = temp2;
-                rules[val].reversed =1;
             }
             if(rules[val].peanutsOperator=='='
                && rules[val].pretzelsOperator!='='){
@@ -80,7 +79,6 @@ public class Game {
                 rules[val].pretzelsOperator = temp1;
                 rules[val].peanuts = rules[val].pretzels;
                 rules[val].pretzels = temp2;
-                rules[val].reversed =1;
             }
             
         }
@@ -101,7 +99,6 @@ public class Game {
         // int test2= test;
         int altx;
         int alty;
-        int revTemp;
         if(x2==0 &&y2==0){
             return 1 - turn;
             
@@ -114,8 +111,6 @@ public class Game {
             turn =1;
         }
         for(int c = 0; c < rules.length; c++){
-
-           
             /* loop  ><, i=(totalx-rulex)*ruley-1, all division by ruleY, calc+ is rulesx +1;*/
             
             if(rules[c].peanutsOperator =='>'
@@ -124,13 +119,6 @@ public class Game {
                 for(int i=((x2-rules[c].peanuts)*rules[c].pretzels)-1; i>=0;i--){
                     altx = (i/rules[c].pretzels)+rules[c].peanuts+1;
                     alty=i%rules[c].pretzels;
-
-                    /* if the operators have been reversed, ensure the rule is applied correctly*/
-                    if(rules[c].reversed ==1){
-                        revTemp =altx;
-                        altx = alty;
-                        alty = revTemp;
-                    }
                     
                     if(x2-altx>=0 && y2-alty>=0){
                         if(calc(x2-altx,y2-alty,rules,turn,turnNo+1)==1){
@@ -162,12 +150,6 @@ public class Game {
                 for(int i=rules[c].peanuts*rules[c].pretzels-1; i>=0;i--){
                     altx=i%rules[c].pretzels +rules[c].peanuts+1;
                     alty= i/rules[c].pretzels + rules[c].pretzels+1;
-
-                    if(rules[c].reversed ==1){
-                        revTemp =altx;
-                        altx = alty;
-                            alty = revTemp;
-                    }
                     
                     if(x2-altx>=0 && y2-alty>=0){
                         if(calc(x2-altx,y2-alty,rules,turn,turnNo+1)==1){
@@ -222,18 +204,10 @@ public class Game {
                     && rules[c].pretzelsOperator=='='){
                 for(int i=rules[c].peanuts-1; i>0;i--){
                     alty =rules[c].pretzels;
-                    altx =i;
-
-                    if(rules[c].reversed ==1){
-                        revTemp =altx;
-                            altx = alty;
-                            alty = revTemp;
-                    }
-                    
                     if(x2-i >=0 &&y2-alty>=0){
                         if(calc(x2-i, y2-alty,rules,turn,turnNo+1) ==1){
                             if(turnNo==0){
-                                result[0] = altx;
+                                result[0] = i;
                                 result[1] = alty;
                                 return 1;
                                 
@@ -255,20 +229,11 @@ public class Game {
 
                 
                 for(int i=(x2 - (rules[c].peanuts+1)); i>=0;i--){
-                    alty = rules[c].pretzels;;
-                    altx =i+rules[c].peanuts+1;;
-
-                    if(rules[c].reversed ==1){
-                        revTemp =altx;
-                            altx = alty;
-                            alty = revTemp;
-                    }
-                    
-                    if(x2-altx>=0 && y2-alty>=0){
-                        if(calc(x2-altx, y2-alty,rules,turn,turnNo+1) ==1){
+                    if(x2-(i+rules[c].peanuts+1)>=0 && y2-rules[c].pretzels>=0){
+                        if(calc(x2-(i+rules[c].peanuts+1), y2-rules[c].pretzels,rules,turn,turnNo+1) ==1){
                             if(turnNo==0){
-                                result[0] = altx;
-                                result[1] = alty;
+                                result[0] = i+rules[c].peanuts+1;
+                                result[1] = rules[c].pretzels;
                                 return 1;
                             }
                             else if(turn ==0){
@@ -285,22 +250,12 @@ public class Game {
            
             else if(rules[c].peanutsOperator=='='
                     && rules[c].pretzelsOperator =='='){
-
-                altx = rules[c].peanuts;
-                alty = rules[c].pretzels;
-
-                if(rules[c].reversed ==1){
-                    revTemp =altx;
-                        altx = alty;
-                        alty = revTemp;
-                }
-                
-                if(x2-altx>=0 && y2-alty>=0){
-                    if(calc(x2-altx, y2-alty,rules,turn,turnNo+1)==1){
+                if(x2-rules[c].peanuts>=0 && y2-rules[c].pretzels>=0){
+                    if(calc(x2-rules[c].peanuts, y2-rules[c].pretzels,rules,turn,turnNo+1)==1){
                         if(turnNo==0){
                             
-                            result[0]=altx;
-                            result[1] = alty;
+                            result[0]=rules[c].peanuts;
+                            result[1] = rules[c].pretzels;
                             return 1;
                         }else if(turn ==0){
                             return 1;
