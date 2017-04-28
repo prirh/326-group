@@ -24,9 +24,17 @@ public class Access{
             System.out.println("As big as you like");
         }
         Map map = new Map(coords);
-        System.out.println(map.getMaxRange());
-        System.out.println(map.neighbours());
-        System.out.println(map.distances.toString());
+
+        Circle test = map.centre;
+
+        System.out.println("Circle: " + test.toString());
+        System.out.println("encloses " + test.numberOfMembers() + " points");
+        System.out.println("checking...");
+        map.check(test);
+
+        // test.setR(map.centre.r + 0.000001);
+        // test.addMembers(map.points);
+        // System.out.println("it now encloses " + test.numberOfMembers() + " points");
     }
 
     /* getX takes a string of 2 coordinates in format "east north"

@@ -22,7 +22,7 @@ public class Point {
 
     public double furthestNeighbourDistance() {
         Collections.sort(distances);
-        return distances.get(11);
+        return distances.get(distances.size() - 1);
     }
 
     public Point furthestNeighbour() {
