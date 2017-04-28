@@ -11,11 +11,11 @@ public class Circle {
     public Circle(double x, double y) {
         this.x = x;
         this.y = y;
-        members = new ArrayList<Point>();
         distances = new ArrayList<Double>();
     }
 
     public void addMembers(Point[] candidates) {
+        members = new ArrayList<Point>();
         for(Point candidate : candidates) {
             if(Math.hypot(x - candidate.X, y - candidate.Y) < r) {
                 members.add(candidate);

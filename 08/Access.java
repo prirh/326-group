@@ -7,17 +7,13 @@ package etude08;
 import java.util.*;
 
 public class Access{
-
-    public static final ArrayList<String> coords = new ArrayList<String>();
-
     public static void main(String[]args) {
         Scanner scan = new Scanner(System.in);
+        scan.nextLine();
         int numberOfPoints = 0;
+        public static final ArrayList<String> coords = new ArrayList<String>();
         while(scan.hasNextLine()){
-            String line = scan.nextLine();
-            if(line.charAt(0) != 'A'){
-                coords.add(line);
-            }
+            coords.add(scan.nextLine());
             numberOfPoints++;
         }
         if(numberOfPoints < 12) {
@@ -27,8 +23,12 @@ public class Access{
 
         Circle test = map.centre;
 
+        test.setR(map.getMaxRange() / 2);
+        test.addMembers(map.points);
+
         System.out.println("Circle: " + test.toString());
         System.out.println("encloses " + test.numberOfMembers() + " points");
+
         System.out.println("checking...");
         map.check(test);
 
@@ -38,14 +38,14 @@ public class Access{
     }
 
     /* getX takes a string of 2 coordinates in format "east north"
-       and returns the east (or x) value */
+    and returns the east (or x) value */
     public static double getX(String lineIn) {
         String[] lineArray = lineIn.split(" ");
         return Double.parseDouble(lineArray[0]);
     }
 
     /* getY takes a string of 2 coordinates in format "east north"
-       and returns the north (or y) value */
+    and returns the north (or y) value */
     public static double getY(String lineIn) {
         String[] lineArray = lineIn.split(" ");
         return Double.parseDouble(lineArray[1]);

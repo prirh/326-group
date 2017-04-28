@@ -25,6 +25,11 @@ public class Point {
         return distances.get(distances.size() - 1);
     }
 
+    public double eleventhNeighbourDistance() {
+        Collections.sort(distances);
+        return distances.get(11);
+    }
+
     public Point furthestNeighbour() {
         return neighbours.get(11);
     }

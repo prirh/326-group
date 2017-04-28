@@ -7,6 +7,7 @@ public class Map {
     ArrayList<Double> distances;
     final int NUMBER_OF_POINTS;
     Circle centre;
+    HashMap<double, Point[]> distancesAndPoints;
 
     public Map(ArrayList<String> points) {
         Scanner scanner;
@@ -23,13 +24,11 @@ public class Map {
         centre.setR();
         centre.addMembers(this.points);
 
-
-
         for(int i = 0; i < NUMBER_OF_POINTS; i++) {
             for(int j = 0; j < NUMBER_OF_POINTS; j++) {
                 this.points[i].addNeighbour(this.points[j]);
             }
-            distances.add(this.points[i].furthestNeighbourDistance());
+            distances.add(this.points[i].eleventhNeighbourDistance());
         }
     }
 
@@ -109,5 +108,35 @@ public class Map {
 
     public double getMaxRange(){
         return Collections.max(distances);
+    }
+
+    public static void main(String[]args) {
+        Scanner scan = new Scanner(System.in);
+        scan.nextLine();
+        int numberOfPoints = 0;
+        public static final ArrayList<String> coords = new ArrayList<String>();
+        while(scan.hasNextLine()){
+            coords.add(scan.nextLine());
+            numberOfPoints++;
+        }
+        if(numberOfPoints < 12) {
+            System.out.println("As big as you like");
+        }
+        Map map = new Map(coords);
+
+        Circle test = map.centre;
+
+        test.setR(map.getMaxRange() / 2);
+        test.addMembers(map.points);
+
+        System.out.println("Circle: " + test.toString());
+        System.out.println("encloses " + test.numberOfMembers() + " points");
+
+        System.out.println("checking...");
+        map.check(test);
+
+        // test.setR(map.centre.r + 0.000001);
+        // test.addMembers(map.points);
+        // System.out.println("it now encloses " + test.numberOfMembers() + " points");
     }
 }
