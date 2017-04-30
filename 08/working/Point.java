@@ -34,8 +34,6 @@ public class Point {
         return neighbours.get(11);
     }
 
-
-
     public String toString() {
         return X + " " + Y;
     }

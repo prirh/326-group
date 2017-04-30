@@ -5,21 +5,25 @@ import java.util.*;
 public class Map {
     Point[] points;
     final int NUMBER_OF_POINTS;
-    TreeMap<String, Double> distances;
+    HashMap<String, Double> distances;
     Double min;
 
     public Map(ArrayList<String> points) {
         Scanner scanner;
-        NUMBER_OF_POINTS = points.size();
+        Set<String> noDuplicates = new HashSet<String>();
+        noDuplicates.addAll(points);
+        NUMBER_OF_POINTS = noDuplicates.size();
         this.points = new Point[NUMBER_OF_POINTS];
 
-        for(int i = 0; i < NUMBER_OF_POINTS; i++) {
-            scanner = new Scanner(points.get(i));
-            this.points[i] = new Point(scanner.nextDouble(), scanner.nextDouble());
+        int i = 0;
+        for(String input : noDuplicates) {
+            scanner = new Scanner(input);
+            this.points[i++] = new Point(scanner.nextDouble(), scanner.nextDouble());
+
         }
 
-        distances = new TreeMap<int[], Double>();
-        for(int i = 0; i < NUMBER_OF_POINTS; i++) {
+        distances = new HashMap<String, Double>();
+        for(i = 0; i < NUMBER_OF_POINTS; i++) {
             for(int j = i + 1; j < NUMBER_OF_POINTS; j++) {
                 double d = distance(this.points[i], this.points[j]);
                 distances.put(i + "," + j, d);
@@ -28,22 +32,23 @@ public class Map {
     }
 
     public double findLargestRadius(int[] pointLabels) {
-        double r = setLiesOnCircle(removeDuplicates(pointLabels));
+        double r = setLiesOnCircle(pointLabels);
         return r == 0 ? findFurthestPoints(pointLabels) : r;
     }
 
     private double findFurthestPoints(int[] pointLabels) {
-        Double max = 0;
-        for(i = 0; i < pointLabels.length; i++){
-            for(j = i + 1; i < pointLabels.length; i++){
+        double max = 0;
+        for(int i = 0; i < pointLabels.length; i++){
+            for(int j = i + 1; j < pointLabels.length; j++){
                 Double d = distances.get(i + "," + j);
+                System.out.println(i + "," + j);
                 max = d > max ? d : max;
             }
         }
         return max;
     }
 
-    public int[] findClosest11() {
+    public double maxRadius() {
         min = distances.get("0,1");
         boolean[] pointsToInclude = new boolean[NUMBER_OF_POINTS];
         for(int i = 0; i < 11; i++) {
@@ -60,32 +65,36 @@ public class Map {
         int j = 0;
         for(int i = 0; i < points.length; i++) {
             if(pointsToInclude[i]) {
-                pointsLabelsToInclude[j] = i;
+                pointLabelsToInclude[j] = i;
             }
         }
 
-        if(findLargestRadius < min) {
-            min = findLargestRadius(pointsLabelsToInclude);
-            closet11Labels = pointsLabelsToInclude.clone();
+        if(findLargestRadius(pointLabelsToInclude) < min) {
+            min = findLargestRadius(pointLabelsToInclude);
+            closet11Labels = pointLabelsToInclude.clone();
         }
 
         int i = 0;
         while(i < NUMBER_OF_POINTS) {
             if(c[i] < i){
                 if(i % 2 == 0){
-                    swap(A[0], A[i]);
+                    boolean holdThis = pointsToInclude[0];
+                    pointsToInclude[0] = pointsToInclude[i];
+                    pointsToInclude[i] = holdThis;
                 } else {
-                    swap(A[c[i]], A[i]);
+                    boolean holdThis = pointsToInclude[c[i]];
+                    pointsToInclude[c[i]] = pointsToInclude[i];
+                    pointsToInclude[i] = holdThis;
                 }
-                int j = 0;
+                j = 0;
                 for(int a = 0; a < points.length; a++) {
                     if(pointsToInclude[a]) {
-                        pointsLabelsToInclude[j] = a;
+                        pointLabelsToInclude[j] = a;
                     }
                 }
-                if(findFurthestPoints(pointsLabelsToInclude) < min) {
-                    min = findFurthestPoints(pointsLabelsToInclude);
-                    closet11Labels = pointsLabelsToInclude.clone();
+                if(findFurthestPoints(pointLabelsToInclude) < min) {
+                    min = findFurthestPoints(pointLabelsToInclude);
+                    closet11Labels = pointLabelsToInclude.clone();
                 }
                 c[i]++;
                 i = 0;
@@ -94,30 +103,30 @@ public class Map {
                 i++;
             }
         }
-        return closet11Labels;
+        return min;
     }
 
     private double distance(Point p1, Point p2) {
         return Math.hypot(p1.X - p2.X, p1.Y - p2.Y);
     }
 
-    private int[] removeDuplicates(int[] set) {
-        distinctPoints = set.length;
-        for(int i = 0; i < set.length; i++) {
-            for(int j = i + 1; i < set.length; i++) {
-                if(set[i] == -1 || set[j] == -1) continue;
-                if(distances.get(set.[i] + "," + set[j]) == 0) {
-                    set[i] = -1;
-                    distinctPoints--;
-                }
-            }
-        }
-        int[] distinctPointLabels = new int[distinctPoints];
-        int j = 0;
-        for(int i = 0; i < set.length; i++) {
-            if(set[i] > -1) distinctPointLabels[j++] = set[i];
-        }
-    }
+    // private int[] removeDuplicates(int[] set) {
+    //     distinctPoints = set.length;
+    //     for(int i = 0; i < set.length; i++) {
+    //         for(int j = i + 1; i < set.length; i++) {
+    //             if(set[i] == -1 || set[j] == -1) continue;
+    //             if(distances.get(set.[i] + "," + set[j]) == 0) {
+    //                 set[i] = -1;
+    //                 distinctPoints--;
+    //             }
+    //         }
+    //     }
+    //     int[] distinctPointLabels = new int[distinctPoints];
+    //     int j = 0;
+    //     for(int i = 0; i < set.length; i++) {
+    //         if(set[i] > -1) distinctPointLabels[j++] = set[i];
+    //     }
+    // }
 
     /**
      * Determines whether a set of points lie on a circle.
@@ -220,7 +229,8 @@ public class Map {
 
         Map map = new Map(coords);
 
-        System.out.println(Arrays.toString(map.findClosest11()));
+        System.out.println(Arrays.toString(map.points));
+        System.out.println(map.maxRadius());
 
     }
 }
