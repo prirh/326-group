@@ -83,8 +83,7 @@ public class Map {
             for(int yStep = 0; yStep <= ySteps; yStep++) {
                 double x = minX + (double) xStep * step;
                 double y = minY + (double) yStep * step;
-                Circle test = new Circle(x, y);
-                test.setR(circle.r);
+                Circle test = new Circle(x, y, r);
                 test.addMembers(points);
                 if(test.numberOfMembers() > 11) {
                     pass = false;
