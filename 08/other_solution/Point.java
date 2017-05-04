@@ -7,12 +7,25 @@ public class Point {
     final double Y;
     ArrayList<Double> distances;
     ArrayList<Point> neighbours;
+    boolean entry;
 
     public Point(double x, double y) {
         X = x;
         Y = y;
         distances = new ArrayList<Double>();
         neighbours = new ArrayList<Point>();
+    }
+
+    public Point(double x, double y, boolean entry) {
+        X = x;
+        Y = y;
+        this.entry = entry;
+        distances = new ArrayList<Double>();
+        neighbours = new ArrayList<Point>();
+    }
+
+    public double distance(Point otherPoint) {
+        return Math.hypot(X - otherPoint.X, Y - otherPoint.Y);
     }
 
     public void addNeighbour(Point neighbour) {
