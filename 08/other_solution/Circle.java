@@ -10,18 +10,27 @@ public class Circle {
     ArrayList<Point> intersectingCircles;
     Point center;
     Point left;
+    double overlap;
 
     public static void main(String[] args) {
-        Point[] points = new Point[5];
-        points[0] = new Point(1.5, 2.5);
-        points[1] = new Point(-1.4, 2.6);
-        points[2] = new Point(-3, -4);
-        points[3] = new Point(3.5, -1.8);
-        points[4] = new Point(0.2, 0.5);
-
-        Circle test = new Circle(points[4], points[1].distance(points[4]));
-        test.addIntersections(points);
-        System.out.println(test.depth());
+        // Point[] points = new Point[4];
+        // points[0] = new Point(-1, -1);
+        // points[1] = new Point(-1, 1);
+        // points[2] = new Point(1, 1);
+        // points[3] = new Point(1, -1);
+        // System.out.println(points[0].distance(points[2]) / 2);
+        //
+        // Circle test = new Circle(points[0], points[0].distance(points[2]) / 2);
+        // System.out.println(test.depth(points));
+        //
+        // System.out.println(test.topIntersections);
+        // System.out.println(test.bottomIntersections);
+        // System.out.println(test.leftDepth());
+        //
+        //
+        // System.out.println("sorted");
+        // System.out.println(test.topIntersections);
+        // System.out.println(test.bottomIntersections);
 
     }
 
@@ -32,34 +41,43 @@ public class Circle {
         this.center = center;
         this.r = r;
         this.left = new Point(center.X - r, center.Y);
+        overlap = 0;
         topIntersections = new ArrayList<Point>();
         bottomIntersections = new ArrayList<Point>();
         intersectingCircles = new ArrayList<Point>();
     }
 
-    public void addMembers(Point[] candidates) {
-        members = new ArrayList<Point>();
-        for(Point candidate : candidates) {
-            if(Math.hypot(center.X - candidate.X, center.Y - candidate.Y) < r) {
-                members.add(candidate);
-            }
-        }
+    public void reset() {
+      overlap = 0;
+      topIntersections = new ArrayList<Point>();
+      bottomIntersections = new ArrayList<Point>();
+      intersectingCircles = new ArrayList<Point>();
     }
 
-    public double depth() {
+
+    public double depth(Point[] map) {
+        addIntersections(map);
+        System.out.println(intersectingCircles);
         double currentDepth = leftDepth();
         double maxDepth = currentDepth;
-        Collections.sort(topIntersections, new Comparator<Point>() {
+
+        Collections.sort(topIntersections, new Comparator<Point>(){
+            @Override
             public int compare(Point p1, Point p2) {
-                if(p1.X >= p2.X) return -1;
+                if(p1.X > p2.X) return 1;
+                if(p1.X < p2.X) return -1;
+                else if(p1.entry) return -1;
                 else return 1;
             }
         });
 
-        Collections.sort(bottomIntersections, new Comparator<Point>() {
+        Collections.sort(bottomIntersections, new Comparator<Point>(){
+            @Override
             public int compare(Point p1, Point p2) {
-                if(p1.X >= p2.X) return -1;
-                else return 1;
+                if(p1.X < p2.X) return 1;
+                if(p1.X > p2.X) return -1;
+                else if(p1.entry) return -1;
+                else return -1;
             }
         });
 
@@ -68,13 +86,19 @@ public class Circle {
             else currentDepth--;
             if(currentDepth > maxDepth) maxDepth = currentDepth;
         }
+
+        for(Point intersection : bottomIntersections) {
+            if(intersection.entry) currentDepth++;
+            else currentDepth--;
+            if(currentDepth > maxDepth) maxDepth = currentDepth;
+        }
         return maxDepth;
     }
 
     private double leftDepth() {
-        double depth = 1;
+        double depth = overlap;
         for(Point point : intersectingCircles) {
-            if(point.distance(left) < r) {
+            if(point.distance(left) <= r) {
                 depth++;
             }
         }
@@ -83,7 +107,11 @@ public class Circle {
 
     public void addIntersections(Point[] map) {
         for(Point point : map) {
-            if(point.distance(center) < r) {
+          if(point.distance(center) < 0.00001) {
+            overlap++;
+            continue;
+          }
+            if(point.distance(center) <= 2 * r) {
                 intersectingCircles.add(point);
                 for(Point intersection : findIntersections(point)) {
                     if(intersection.Y >= center.Y) {
@@ -97,24 +125,25 @@ public class Circle {
     }
 
     private Point[] findIntersections(Point point) {
+        final double DP = 1000.0;
         Point[] intersections = new Point[2];
-        double a = Math.sqrt((4 * Math.pow(r, 2)) / point.distance(center) - 1);
-        double xSum = (center.X + point.X) / 2;
-        double ySum = (center.Y + point.Y) / 2;
-        double xDiff = a * (center.X - point.X);
-        double yDiff = a * (point.Y - center.Y);
+        double d = point.distance(center);
+        double a = d / 2;
+        double h = Math.sqrt(Math.pow(r, 2) - Math.pow(a, 2));
 
-        double x1 = xSum + yDiff;
-        double y1 = ySum + xDiff;
+        Point mid = new Point((point.X + center.X) / 2, (point.Y + center.Y) / 2);
 
-        double x2 = xSum - yDiff;
-        double y2 = ySum - xDiff;
+        double x1 = Math.round((mid.X + h * (point.Y - center.Y) / d) * DP) / DP;
+        double y1 = Math.round((mid.Y - h * (point.X - center.X) / d) * DP) / DP;
+
+        double x2 = Math.round((mid.X - h * (point.Y - center.Y) / d) * DP) / DP;
+        double y2 = Math.round((mid.Y + h * (point.X - center.X) / d) * DP) / DP;
 
         if(point.Y >= center.Y) {
-            intersections[0] = new Point(x2, y2, x1 > x2);
+            intersections[0] = new Point(x2, y2, x1 >= x2);
             intersections[1] = new Point(x1, y1, x1 < x2);
         } else {
-            intersections[0] = new Point(x2, y2, x1 < x2);
+            intersections[0] = new Point(x2, y2, x1 <= x2);
             intersections[1] = new Point(x1, y1, x1 > x2);
         }
         return intersections;
@@ -122,5 +151,13 @@ public class Circle {
 
     public String toString() {
         return "x: " + center.X + " y: " + center.Y + " r: " + r;
+    }
+    private class ComparePoints implements Comparator<Point> {
+        @Override
+        public int compare(Point p1, Point p2) {
+            if(p1.X > p2.X) return 1;
+            if(p1.X < p2.X) return -1;
+            else return 0;
+        }
     }
 }

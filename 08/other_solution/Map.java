@@ -23,36 +23,37 @@ public class Map {
 
         for(i = 0; i < NUMBER_OF_POINTS; i++) {
             for(int j = i + 1; j < NUMBER_OF_POINTS; j++) {
-                System.out.println("Computing distances...");
-                double d = distance(this.points[i], this.points[j]);
+                // System.out.println("Computing distances...");
+                double d = this.points[i].distance(this.points[j]);
                 distances.put(d, i + "," + j);
             }
         }
     }
 
+    public double maxRadius() {
+      double rMin = Collections.max(distances.keySet()) / 2;
+      System.out.println("furthest points: " +rMin);
+      for(Point point : points) {
+        double rMax = rMin;
+        for(Point otherPoint : points) {
+          if(!point.equals(otherPoint)) {
+            double r = point.distance(otherPoint) / 2;
+            Circle circle = new Circle(point, r);
+            System.out.println("Trying: " + r);
+            double depth = circle.depth(points);
+            System.out.println("depth: " + depth);
 
-
-    public double findLargestRadius() {
-        int i = 0;
-        double maxDistance = 0;
-        Set<Double> descendingDistances = distances.keySet();
-        for(double distance : descendingDistances) {
-
-            Point p1 = points[Integer.parseInt(distances.get(distance).split(",")[0])];
-            Point p2 = points[Integer.parseInt(distances.get(distance).split(",")[1])];
-            Circle c = new Circle((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2, distance / 2);
-            c.addMembers(points);
-            if(c.numberOfMembers() > 11) {
-                return maxDistance;
-            } else {
-                maxDistance = distance / 2;
+            if(depth == 11.0) {
+              // System.out.println("Trying: " + r);
+              // System.out.println("depth: " + circle.depth(points));
+              rMax = r;
             }
+          }
+          if(rMax < rMin) rMin = rMax;
         }
-        return 0;
-    }
-
-    private double distance(Point p1, Point p2) {
-        return Math.hypot(p1.X - p2.X, p1.Y - p2.Y);
+        break;
+      }
+      return rMin;
     }
 
     public void check(double r) {
@@ -94,7 +95,7 @@ public class Map {
             for(int yStep = 0; yStep <= ySteps; yStep++) {
                 double x = minX + (double) xStep * step;
                 double y = minY + (double) yStep * step;
-                Circle test = new Circle(x, y, r);
+                TestCircle test = new TestCircle(x, y, r);
                 test.addMembers(points);
                 if(test.numberOfMembers() > 11) {
                     pass = false;
@@ -127,7 +128,7 @@ public class Map {
 
         Map map = new Map(coords);
 
-        double solution = map.findLargestRadius();
+        double solution = map.maxRadius();
         System.out.println(solution);
         // map.check(solution);
 

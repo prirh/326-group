@@ -29,8 +29,7 @@ public class Point {
     }
 
     public void addNeighbour(Point neighbour) {
-        distances.add(Math.hypot(X - neighbour.X, Y - neighbour.Y));
-        neighbours.add(neighbour);
+        if(!this.equals(neighbour)) neighbours.add(neighbour);
     }
 
     public double furthestNeighbourDistance() {
@@ -48,6 +47,6 @@ public class Point {
     }
 
     public String toString() {
-        return X + " " + Y;
+        return X + " " + Y + " " + entry;
     }
 }
