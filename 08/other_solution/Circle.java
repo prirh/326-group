@@ -57,7 +57,7 @@ public class Circle {
 
     public double depth(Point[] map) {
         addIntersections(map);
-        System.out.println(intersectingCircles);
+        // System.out.println(intersectingCircles);
         double currentDepth = leftDepth();
         double maxDepth = currentDepth;
 

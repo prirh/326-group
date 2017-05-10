@@ -31,29 +31,25 @@ public class Map {
     }
 
     public double maxRadius() {
-      double rMin = Collections.max(distances.keySet()) / 2;
-      System.out.println("furthest points: " +rMin);
-      for(Point point : points) {
-        double rMax = rMin;
-        for(Point otherPoint : points) {
-          if(!point.equals(otherPoint)) {
-            double r = point.distance(otherPoint) / 2;
-            Circle circle = new Circle(point, r);
-            System.out.println("Trying: " + r);
-            double depth = circle.depth(points);
-            System.out.println("depth: " + depth);
-
-            if(depth == 11.0) {
-              // System.out.println("Trying: " + r);
-              // System.out.println("depth: " + circle.depth(points));
-              rMax = r;
+        double rUpper = Collections.max(distances.keySet());
+        double rLower = 0;
+        System.out.println("furthest points: " +rUpper);
+        for(Point point : points) {
+            for(Point otherPoint : points) {
+                double r = point.distance(otherPoint) / 2;
+                Circle circle = new Circle(point, r);
+                System.out.println("Trying: " + r);
+                double depth = circle.depth(points);
+                System.out.println("depth: " + depth);
+                if(depth > 11.0 && r < rUpper) {
+                    rUpper = r;
+                } else if(depth <= 11 && r > rLower) {
+                    rLower = r;
+                }
             }
-          }
-          if(rMax < rMin) rMin = rMax;
         }
-        break;
-      }
-      return rMin;
+        System.out.println(rLower + " < r < " + rUpper);
+        return rLower;
     }
 
     public void check(double r) {
