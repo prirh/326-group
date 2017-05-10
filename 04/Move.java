@@ -5,7 +5,7 @@ import java.util.*;
  * COSC326 Etude 4
  * Peanuts and Pretzels
  *
- * @author Rhianne Price
+ * @author Rhianne Price, Zac Gardner, Erina Jeffery, Caleb Mitchell
  * February 2017
  **/
 public class Move {
@@ -15,6 +15,7 @@ public class Move {
 
     char pretzelsOperator;
     int pretzels;
+    int reversed;
 
     /**
      *Move constructor class taking all needed information for a single rule.
@@ -28,6 +29,7 @@ public class Move {
 
         pretzelsOperator = splitMove[2].charAt(1); // charAt(1) to jump the space
         pretzels = Integer.parseInt(splitMove[3]);
+        reversed = 0;
     }
 
     /**
