@@ -1,5 +1,4 @@
 package etude04;
-import java.util.*;
 /**
  * Game.java
  * COSC326 Etude 4
@@ -8,6 +7,9 @@ import java.util.*;
  * @author Rhianne Price, Zac Gardner, Erina Jeffery, Caleb Mitchell
  * February 2017
  **/
+
+import java.util.*;
+
 public class Game {
     private Move winningMove;
     private Map<String, Integer> memo;
@@ -18,6 +20,10 @@ public class Game {
         Scanner scanner = new Scanner(System.in).useDelimiter("\n\n");
         while (scanner.hasNext()) {
             Game game = new Game(scanner.next().trim());
+            if(game.PEANUTS > 1000 || game.PRETZELS > 1000) {
+                System.out.println(game.PEANUTS + " peanuts and " + game.PRETZELS + " is too many snacks");
+                continue;
+            }
             System.out.println(game.getWinningMove());
         }
     }
@@ -32,11 +38,13 @@ public class Game {
         PEANUTS = scanner.nextInt();
         PRETZELS = scanner.nextInt();
 
-        scanner.nextLine();
-        for (int i = 0; i < rulesCount; i++) {
-            rules[i] = new Move(scanner.nextLine().trim());
+        if(scanner.hasNextLine()) {
+            scanner.nextLine();
+            for (int i = 0; i < rulesCount; i++) {
+                rules[i] = new Move(scanner.nextLine().trim());
+            }
+            fixRules();
         }
-        fixRules();
     }
 
     /**
@@ -66,17 +74,22 @@ public class Game {
         }
     }
 
+    /**
+     * Handles the call to calc and returns the winning move as a string.
+     * makes sure the calc is called before winning move is accessed.
+     * @return the winning move.
+     */
     private String getWinningMove() {
         calc(PEANUTS, PRETZELS, 1, 0);
         return winningMove.asSolution();
     }
 
     /**
-     * calc performs various if statements to attempt
-     * every possible answer until the first correct one is found. Moves are
-     * cached in a hashmap to avoid repeating calculations.
-     * @param peanutsLeft represents the total number of pretzels at that instance
-     * @param pretzelsLeft represents the total number of peanuts at that instance
+     * calc performs various if statements to attempt every possible answer
+     * until the first correct one is found. Moves are cached in a hashmap to
+     * avoid repeated calculations.
+     * @param peanutsLeft the total number of pretzels at that instance
+     * @param pretzelsLeft  the total number of peanuts at that instance
      * @param turn keeps track of whose turn it is
      * @param turnNo keeps track of the number of turns that have passed.
      * @return 1 if this is a winning move, 0 otherwise.
@@ -291,7 +304,7 @@ public class Game {
                 }
             }
         }
-        /* it is always permissbale to take one of either group,
+        /* it is always permissable to take one of either group,
            hence the below being in no loop.*/
         if (peanutsLeft >= 1) {
             if (calc(peanutsLeft - 1, pretzelsLeft, turn, turnNo + 1) == 1) {

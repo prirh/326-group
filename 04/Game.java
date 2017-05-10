@@ -20,9 +20,6 @@ public class Game {
         Scanner scanner = new Scanner(System.in).useDelimiter("\n\n");
         while (scanner.hasNext()) {
             Game game = new Game(scanner.next().trim());
-            for(Move rule : game.rules) {
-                System.out.println(rule);
-            }
             if(game.PEANUTS > 1000 || game.PRETZELS > 1000) {
                 System.out.println(game.PEANUTS + " peanuts and " + game.PRETZELS + " is too many snacks");
                 continue;

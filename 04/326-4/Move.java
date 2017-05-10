@@ -1,5 +1,4 @@
 package etude04;
-import java.util.*;
 /**
  * Move.java
  * COSC326 Etude 4
@@ -8,6 +7,12 @@ import java.util.*;
  * @author Rhianne Price, Zac Gardner, Erina Jeffery, Caleb Mitchell
  * February 2017
  **/
+import java.util.*;
+
+/**
+ * Move class encapsualates the relevant information for a move, and some
+ * printing functionality.
+ */
 public class Move {
 
     char peanutsOperator;
@@ -18,8 +23,8 @@ public class Move {
     int reversed;
 
     /**
-     *Move constructor class taking all needed information for a single rule.
-     *@arg move. input string rule.
+     * Move constructor taking all needed information for a single rule.
+     * @param move input string rule.
      **/
     public Move(String move) {
         // separates the string into operator, number, space, operator, number
@@ -33,7 +38,8 @@ public class Move {
     }
 
     /**
-     * to String class reconstructs the input string 'move' and re outputs it.
+     * toString reconstructs the input string 'move' and re outputs it.
+     * @return a string representation of this move.
      **/
     public String toString() {
         StringBuilder move = new StringBuilder();
@@ -43,6 +49,10 @@ public class Move {
         return move.toString();
     }
 
+    /**
+     * Prints the move in acceptable solution format, without its operators.
+     * @return a string representation of this move, without operators.
+     */
     public String asSolution() {
         if (peanutsOperator == '=' && pretzelsOperator == '=') {
             return peanuts + " " + pretzels;
