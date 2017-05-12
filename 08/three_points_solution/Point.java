@@ -28,6 +28,10 @@ public class Point {
         return Math.hypot(X - otherPoint.X, Y - otherPoint.Y);
     }
 
+    public Point centre(Point otherPoint) {
+        return new Point(X + otherPoint.X / 2, X + otherPoint.X / Y);
+    }
+
     public void addNeighbour(Point neighbour) {
         if(!this.equals(neighbour)) neighbours.add(neighbour);
     }
