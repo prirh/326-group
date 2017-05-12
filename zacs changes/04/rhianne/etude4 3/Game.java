@@ -44,8 +44,6 @@ public class Game {
             }
         }
         result[0] =0;
-
-
         result[1] =0;
         preCalc(PEANUTS, PRETZELS, rules);
         System.out.println(result[0] + " " + result[1]);
@@ -224,7 +222,7 @@ public class Game {
             // IF RULE X IS < VALUE AND RULE Y = VALUE
             else if(rules[c].peanutsOperator=='<'
                     && rules[c].pretzelsOperator=='='){
-                for(int i=rules[c].peanuts-1; i>=0;i--){
+                for(int i=rules[c].peanuts-1; i>0;i--){
                     alty =rules[c].pretzels;
                     altx =i;
 
@@ -235,7 +233,7 @@ public class Game {
                     }
                     
                     if(x2-i >=0 &&y2-alty>=0){
-                        if(calc(x2-altx, y2-alty,rules,turn,turnNo+1) ==1){
+                        if(calc(x2-i, y2-alty,rules,turn,turnNo+1) ==1){
                             if(turnNo==0){
                                 result[0] = altx;
                                 result[1] = alty;
