@@ -10,59 +10,48 @@ import java.util.*;
  **/
 public class Game {
 
-    private static final int PLAYER_ONE = 0;
-    private static final int PLAYER_TWO = 1;
-    private static final Move YOU_LOSE = new Move("=1 =1");
-    static int[] result ={0,0};
 
     private final int PEANUTS, PRETZELS;
     private Move[] rules;
-
+    private Move winningMove;
+    private Map<String, Integer> memo;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in).useDelimiter("\n\n");
-        while(scanner.hasNext()) {
+        while (scanner.hasNext()) {
             Game game = new Game(scanner.next().trim());
+            if(game.PEANUTS > 1000 || game.PRETZELS > 1000) {
+                System.out.println(game.PEANUTS + " peanuts and " + game.PRETZELS + " is too many snacks");
+                continue;
+            }
+            System.out.println(game.getWinningMove());
         }
-
     }
 
     public Game(String game) {
-        int rulesCount=game.split(System.getProperty("line.separator"))
-            .length-1;
-        Scanner scanner = new Scanner(game);
+        int rulesCount = game.split(System.getProperty("line.separator")).length - 1;
+        memo = new HashMap<String, Integer>();
+        rules = new Move[rulesCount];
+        winningMove = new Move("=0 =0");
 
+        Scanner scanner = new Scanner(game);
         PEANUTS = scanner.nextInt();
         PRETZELS = scanner.nextInt();
 
-        rules = new Move[rulesCount];
-        if(scanner.hasNext()){
-
+        if(scanner.hasNextLine()) {
             scanner.nextLine();
-            for(int i = 0; i < rulesCount; i++) {
+            for (int i = 0; i < rulesCount; i++) {
                 rules[i] = new Move(scanner.nextLine().trim());
             }
+            fixRules();
         }
-        result[0] =0;
-
-
-        result[1] =0;
-        preCalc(PEANUTS, PRETZELS, rules);
-        System.out.println(result[0] + " " + result[1]);
-    }
-
-    private Move bestMove(int peanutsLeft, int pretzelsLeft) {
-        return YOU_LOSE;
     }
 
     /**
-     * preCalc preforms and need modifications is inputted rules
-     * to allow them to function correctly in the calc method.
-     *@arg x2 represents the total number of pretzels
-     *@arg y2 represents the total number of peanuts
-     *@arg rules contains the entire list of rules for this one input
+     * fixRules modifies rules to allow them to function correctly in the calc
+     * method.
      **/
-    public static void preCalc(int x2, int y2, Move[] rules){
+    private void fixRules() {
 
         for(int val = 0; val < rules.length; val++){
 
@@ -88,7 +77,16 @@ public class Game {
             }
 
         }
-        calc(x2,y2,rules,1,0);
+    }
+
+    /**
+     * Handles the call to calc and returns the winning move as a string.
+     * makes sure the calc is called before winning move is accessed.
+     * @return the winning move.
+     */
+    private String getWinningMove() {
+        calc(PEANUTS, PRETZELS, 1, 0);
+        return winningMove.asSolution();
     }
 
     /**
@@ -100,9 +98,13 @@ public class Game {
      *@arg turn keeps track of whose turn it is
      *@arg turnNo keeps track of the number of turns that have passed.
      **/
-    public static int calc(int x2, int y2, Move[] rules,  int turn, int turnNo){
+    public int calc(int x2, int y2,  int turn, int turnNo){
         // @param turn is always 1 to begin with, we start on the players turn.
         // int test2= test;
+
+        String situation = x2 + " " + y2 + " " + turn;
+        if(memo.get(situation) != null) return memo.get(situation);
+
         int altx;
         int alty;
         int revTemp;
@@ -137,18 +139,21 @@ public class Game {
                     }
 
                     if(x2-altx>=0 && y2-alty>=0){
-                        if(calc(x2-altx,y2-alty,rules,turn,turnNo+1)==1){
+                        if(calc(x2-altx,y2-alty,turn,turnNo+1)==1){
                             if(turnNo==0){
-                                result[0] =altx;
-                                result[1] =alty;
+                                memo.put(situation, 1);
+                                winningMove.peanuts = altx;
+                                winningMove.pretzels = alty;
                                 return 1;
                             }else if(turn ==0){
+                                memo.put(situation, 1);
                                 return 1;
                             }
                         }
 
 
                         else if(turn ==1){
+                            memo.put(situation, 0);
                             return 0;
 
                         }
@@ -174,18 +179,20 @@ public class Game {
                     }
 
                     if(x2-altx>=0 && y2-alty>=0){
-                        if(calc(x2-altx,y2-alty,rules,turn,turnNo+1)==1){
+                        if(calc(x2-altx,y2-alty,turn,turnNo+1)==1){
 
                             if(turnNo==0){
-                                result[0] = altx;
-                                result[1] = alty;
-                                return 1;
+                                winningMove.peanuts = altx;
+                                winningMove.pretzels = alty;
+                                memo.put(situation, 1);
                             }
                             else if(turn ==0){
+                                memo.put(situation, 1);
                                 return 1;
                             }
                         }
                         else if(turn ==1){
+                            memo.put(situation, 0);
                             return 0;
                         }
                     }
@@ -203,17 +210,20 @@ public class Game {
                     alty= (i%rules[c].pretzels);
 
                     if(x2-altx >=0 && y2-alty>=0){
-                        if(calc(x2-altx,y2-alty,rules,turn,turnNo+1)==1){
+                        if(calc(x2-altx,y2-alty,turn,turnNo+1)==1){
                             if(turnNo==0){
-                                result[0] = altx;
-                                result[1] = alty;
+                                winningMove.peanuts = altx;
+                                winningMove.pretzels = alty;
+                                memo.put(situation, 1);
                                 return 1;
                             }
                             else if(turn ==0){
+                                memo.put(situation, 1);
                                 return 1;
                             }
                         }
                         else if(turn ==1){
+                            memo.put(situation, 0);
                             return 0;
                         }
 
@@ -235,17 +245,20 @@ public class Game {
                     }
 
                     if(x2-i >=0 &&y2-alty>=0){
-                        if(calc(x2-altx, y2-alty,rules,turn,turnNo+1) ==1){
+                        if(calc(x2-altx, y2-alty,turn,turnNo+1) ==1){
                             if(turnNo==0){
-                                result[0] = altx;
-                                result[1] = alty;
+                                winningMove.peanuts = altx;
+                                winningMove.pretzels = alty;
+                                memo.put(situation, 1);
                                 return 1;
 
                             }
                             else if(turn ==0){
+                                memo.put(situation, 1);
                                 return 1;
                             }
                         }else if(turn ==1){
+                            memo.put(situation, 0);
                             return 0;
                         }
 
@@ -269,17 +282,20 @@ public class Game {
                     }
 
                     if(x2-altx>=0 && y2-alty>=0){
-                        if(calc(x2-altx, y2-alty,rules,turn,turnNo+1) ==1){
+                        if(calc(x2-altx, y2-alty,turn,turnNo+1) ==1){
                             if(turnNo==0){
-                                result[0] = altx;
-                                result[1] = alty;
+                                winningMove.peanuts = altx;
+                                winningMove.pretzels = alty;
+                                memo.put(situation, 1);
                                 return 1;
                             }
                             else if(turn ==0){
+                                memo.put(situation, 1);
                                 return 1;
                             }
                         }
                         else if(turn==1){
+                            memo.put(situation, 0);
                             return 0;
                         }
                     }
@@ -300,17 +316,19 @@ public class Game {
                 }
 
                 if(x2-altx>=0 && y2-alty>=0){
-                    if(calc(x2-altx, y2-alty,rules,turn,turnNo+1)==1){
+                    if(calc(x2-altx, y2-alty,turn,turnNo+1)==1){
                         if(turnNo==0){
-
-                            result[0]=altx;
-                            result[1] = alty;
+                            winningMove.peanuts = altx;
+                            winningMove.pretzels = alty;
+                            memo.put(situation, 1);
                             return 1;
                         }else if(turn ==0){
+                            memo.put(situation, 1);
                             return 1;
                         }
                     }
                     else if(turn==1){
+                        memo.put(situation, 0);
                         return 0;
                     }
 
@@ -321,37 +339,45 @@ public class Game {
         /* it is always permissbale to take one of either group,
            hence the below being in no loop.*/
         if(x2>=1){
-            if(calc(x2-1,y2,rules,turn,turnNo+1)==1){
+            if(calc(x2-1,y2,turn,turnNo+1)==1){
                 if(turnNo==0){
-                    result[0] =1;
-                    result[1]=0;
+                    winningMove.peanuts = 1;
+                    winningMove.pretzels = 0;
+                    memo.put(situation, 1);
                     return 1;
                 }
                 else if(turn ==0){
+                    memo.put(situation, 1);
                     return 1;
                 }
             }
             else if(turn ==1){
+                memo.put(situation, 0);
                 return 0;
             }
         }
         if(y2>=1){
-            if(calc(x2,y2-1,rules,turn,turnNo+1)==1){
+            if(calc(x2,y2-1,turn,turnNo+1)==1){
                 if(turnNo==0){
-                    result[0] =0;
-                    result[1]=1;
+                    winningMove.peanuts = 0;
+                    winningMove.pretzels = 1;
+                    memo.put(situation, 1);
                     return 1;
                 }else if(turn ==0){
+                    memo.put(situation, 1);
                     return 1;
                 }
             }
             else if(turn ==1){
+                memo.put(situation, 0);
                 return 0;
             }
         }
         if(turn ==1){
+            memo.put(situation, 1);
             return 1;
         }
+        memo.put(situation, 0);
         return 0;
     }
 }
