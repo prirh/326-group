@@ -34,10 +34,6 @@ public class Circle {
 
     }
 
-    public Circle(double x, double y, double r) {
-        this(new Point(x, y), r);
-    }
-
     public Circle(Point center, double r) {
         this.center = center;
         this.r = r;
@@ -46,16 +42,6 @@ public class Circle {
         topIntersections = new ArrayList<Point>();
         bottomIntersections = new ArrayList<Point>();
         intersectingCircles = new ArrayList<Point>();
-    }
-
-    public int numberOfMembers(Point[] candidates) {
-        int members = 0;
-        for(Point candidate : candidates) {
-            if(Math.hypot(center.X - candidate.X, center.Y - candidate.Y) < r) {
-                members++;
-            }
-        }
-        return members;
     }
 
     public void reset() {
@@ -117,11 +103,11 @@ public class Circle {
 
     public void addIntersections(Point[] map) {
         for(Point point : map) {
-            if(point.distance(center) < 0.00001) {
+            if(point.getDistanceTo(center.LABEL) < 0.00001) {
                 overlap++;
                 continue;
             }
-            if(point.distance(center) <= 2 * r) {
+            if(point.getDistanceTo(center.LABEL) <= 2 * r) {
                 intersectingCircles.add(point);
                 for(Point intersection : findIntersections(point)) {
                     if(intersection.Y >= center.Y) {
@@ -137,7 +123,7 @@ public class Circle {
     private Point[] findIntersections(Point point) {
         final double DP = 1000.0;
         Point[] intersections = new Point[2];
-        double d = point.distance(center);
+        double d = point.getDistanceTo(center.LABEL);
         double a = d / 2;
         double h = Math.sqrt(Math.pow(r, 2) - Math.pow(a, 2));
 

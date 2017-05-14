@@ -4,12 +4,12 @@ import java.util.*;
 
 public class Map {
     private static final int K = 12;
-    private final int DP = 4;
+    private int dp = 4;
     private Point[] points;
     private final int NUMBER_OF_POINTS;
     private ArrayList<Double> radiiToTry;
     ArrayList<Point> deepestCircles;
-
+    HashMap<String, Double> distances;
 
     public Map(ArrayList<String> points) {
         Scanner scanner;
@@ -18,21 +18,28 @@ public class Map {
         int i = 0;
         for(String input : points) {
             scanner = new Scanner(input);
-            this.points[i++] = new Point(scanner.nextDouble(), scanner.nextDouble());
+            this.points[i] = new Point(scanner.nextDouble(), scanner.nextDouble(), i++);
         }
-
         radiiToTry = new ArrayList<Double>();
         deepestCircles = new ArrayList<Point>();
+
+        distances = new HashMap<String, Double>();
+
+        for(i = 0; i < NUMBER_OF_POINTS; i++) {
+            this.points[i].addNeighbour(i, 0);
+            for(int j = i + 1; j < NUMBER_OF_POINTS; j++) {
+                double d = this.points[i].distance(this.points[j]);
+                distances.put(i + "," + j, d);
+                this.points[i].addNeighbour(j, d);
+                this.points[j].addNeighbour(i, d);
+            }
+        }
     }
 
     public double getMaxRadius() {
-        double maxD = 0;
-        for(int i = 0; i < NUMBER_OF_POINTS; i++) {
-            for(int j = i + 1; j < NUMBER_OF_POINTS; j++) {
-                double d = this.points[i].distance(this.points[j]);
-                maxD = d > maxD ? d : maxD;
-            }
-        }
+        double maxD = Collections.max(distances.values());
+        if(maxD == 0) return 0;
+        if(maxD > 500) dp = 2;
 
         int maxDepth = 0;
         for(Point point : points) {
@@ -51,18 +58,14 @@ public class Map {
             }
         }
 
-        // System.out.println(deepestCircles);
-
         double r = maxD * 0.6;
 
         while(r > 0) {
             radiiToTry.add(r);
-            r -= Math.pow(10, -DP);
+            r -= Math.pow(10, -dp);
         }
 
         double start = findDepth(0, radiiToTry.size() - 1, K);
-
-        // System.out.println("starting with: " + start);
         r = start;
 
         while(r > 0) {
@@ -74,15 +77,15 @@ public class Map {
                     maxDepth = (int) depth;
                 }
             }
-            if(maxDepth <= K - 1) return round(r, DP);
-            r -= Math.pow(10, -DP);
+            if(maxDepth <= K - 1) return round(r, dp);
+            r -= Math.pow(10, -dp);
         }
         return 0;
     }
 
     public double findDepth(int start, int end, int depth) {
-        if(start == end) return 0;
         int mid = (start + end) / 2;
+        if(start == end) return  radiiToTry.get(mid);
         double maxDepth = 0;
         for(Point point : deepestCircles) {
             Circle check = new Circle(point, radiiToTry.get(mid));
@@ -91,9 +94,11 @@ public class Map {
                 maxDepth = (int) d;
             }
         }
+
+        System.out.println(start + " " + end + " " + "looking for " + depth + " found " + maxDepth + " at size " + radiiToTry.get(mid));
         if(maxDepth == depth) return radiiToTry.get(mid);
-        if(maxDepth < depth) return findDepth(start, mid, depth);
-        return findDepth(mid, end, depth);
+        if(maxDepth < depth) return findDepth(start, mid - 1, depth);
+        return findDepth(mid + 1, end, depth);
     }
 
     public static double round(double toBeRounded, int dp) {
@@ -116,6 +121,8 @@ public class Map {
         }
 
         Map map = new Map(coords);
-        System.out.println(map.getMaxRadius());
+        System.out.println(map.round(map.getMaxRadius(), 2));
     }
+
+
 }
