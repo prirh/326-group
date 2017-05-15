@@ -96,6 +96,7 @@ public class Arith{
                 /*outter loop determines the combination being attempted in
                   a binary fashion via if statements*/
                 for(int i =0; i<max &&found==0 ;i++){
+		System.out.println(i);
                     total = inputs.get(0);
                     used.clear();
                     output ="N " + total;
