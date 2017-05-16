@@ -253,36 +253,35 @@ public class Arith2{
 
 
     public static int treeSolv(long[] nums,int i, long preNum, long prePlus, long preTimes, long total, long answer,String pattern){
-        System.out.println("doing" + test++);
-        if(nums2[0]>=1 && i==0 && answer >total && pattern.indexOf('+')!=-1){
-            System.out.println("Impossible");
+        //System.out.println("doing" + test++);
+        if(nums2[0]>=1 && i==0 && answer >total && pattern.indexOf('+')==1){
+            //System.out.println(pattern + " " + answer + " : " + total);
+            //System.out.println("Impossible");
             System.exit(0);
         }
         if(total ==answer && i ==0){
-            System.out.println("Found");
+            // System.out.println(pattern + " " + answer + " : " + total);
+            //System.out.println("Found");
             return 1;
         }   
         else if(i==0){
+            //System.out.println(pattern + " " + answer + " : " + total);
             //  System.out.println(pattern + ": " + total);
             return 0;
         }
         long num =nums[nums.length-i];
         if(nums2[0] >=1 && total >answer){
+            // System.out.println(pattern + " " + answer + " : " + total);
             return 0;
+            
             //System.out.pattern
-            }
-        if(nums2[0]>=1 && i==0 && answer >total && pattern.indexOf('*')!=-1){
-            System.out.println("Impossible");
-            System.exit(0);
         }
+        
         
         //System.out.println(i + ": " + preNum +": " + prePlus+": " + preTimes+": " + total+": " + answer);
         String pat = pattern+ "+";
         String pat2 = pattern +"*";
-        if(treeSolv(nums,i-1,num,prePlus+num+preTimes,0,prePlus+num+preTimes,answer,pat)==1){
-            return 1; 
-        }
-        else if(preTimes ==0){
+        if(preTimes ==0){
             
             if(treeSolv(nums,i-1,0,prePlus-preNum,(num*preNum),(num*preNum)+(prePlus-preNum),answer,pat2)==1){
                 return 1;
@@ -292,8 +291,11 @@ public class Arith2{
             if(treeSolv(nums,i-1,1,0,(num*preTimes)+(prePlus),(preTimes*num)+(prePlus),answer,pat2)==1){
                 return 1;
             }
-            return 0;
         }
+        if(treeSolv(nums,i-1,num,prePlus+num+preTimes,0,prePlus+num+preTimes,answer,pat)==1){
+            return 1; 
+        }
+        
         return 0;
     }
 }
