@@ -32,18 +32,13 @@ public class Point {
         return new Point(X + otherPoint.X / 2, X + otherPoint.X / Y);
     }
 
-    public void addNeighbour(Point neighbour) {
-        if(!this.equals(neighbour)) neighbours.add(neighbour);
-    }
-
-    public double furthestNeighbourDistance() {
-        Collections.sort(distances);
-        return distances.get(distances.size() - 1);
+    public void addNeighbours(Point[] neighbours) {
+        for(Point neighbour : neighbours) distances.add(distance(neighbour));
     }
 
     public double eleventhNeighbourDistance() {
         Collections.sort(distances);
-        return distances.get(11);
+        return distances.get(12);
     }
 
     public Point furthestNeighbour() {

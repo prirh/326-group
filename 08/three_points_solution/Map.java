@@ -5,23 +5,21 @@ import java.util.*;
 public class Map {
   private int k = 11;
   private Point[] points;
-  private Set<Circle> potentialCircles;
   private final int NUMBER_OF_POINTS;
   private TreeSet<Double> radiiToTry;
-  private TreeSet<Double> bestRadii;
 
   public Map(ArrayList<String> points) {
     Scanner scanner;
     NUMBER_OF_POINTS = points.size();
     this.points = new Point[NUMBER_OF_POINTS];
-    this.potentialCircles = new TreeSet<Circle>(new Comparator<Circle>(){
-      @Override
-      public int compare(Circle c1, Circle c2) {
-        if(c1.r > c2.r) return 1;
-        if(c1.r < c2.r) return -1;
-        else return 0;
-      }
-    });
+    // this.potentialCircles = new TreeSet<Circle>(new Comparator<Circle>(){
+    //   @Override
+    //   public int compare(Circle c1, Circle c2) {
+    //     if(c1.r > c2.r) return 1;
+    //     if(c1.r < c2.r) return -1;
+    //     else return 0;
+    //   }
+    // });
 
     this.radiiToTry = new TreeSet<Double>();
     this.bestRadii = new TreeSet<Double>();
@@ -77,7 +75,7 @@ public class Map {
           // System.out.println(potential);
           // System.out.println(potential.numberOfMembers(points));
           if(potential.numberOfMembers(points) == potential.k - 2) {
-            potentialCircles.add(potential);
+            // potentialCircles.add(potential);
             radiiToTry.add(potential.round(potential.r, 10));
           }
         }
