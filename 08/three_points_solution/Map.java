@@ -34,26 +34,28 @@ public class Map {
   }
 
   public Circle getCircle(Point p1, Point p2, Point p3) {
-    /* If points are collinear. */
+    /* If points are collinear (code to dealwith colinear has been commented
+    out). */
     Circle circle;
     if(p1.X * (p2.Y - p3.Y) + p2.X * (p3.Y - p1.Y) + p3.X * (p1.Y - p2.Y) == 0) {
-      double d12 = p1.distance(p2);
-      double d13 = p1.distance(p3);
-      double d32 = p3.distance(p2);
-      double maxDistance = Math.max(d12, Math.max(d13, d32));
-      if(maxDistance == d13) {
-        circle = new Circle((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2, d13 / 2);
-        circle.setK(k + 1);
-        return circle;
-      }
-      if(maxDistance == d12) {
-        circle = new Circle((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2, d12 / 2);
-        circle.setK(k + 1);
-        return circle;
-      }
-      circle = new Circle((p3.X + p2.X) / 2, (p3.Y + p2.Y) / 2, d32 / 2);
-      circle.setK(k + 1);
-      return circle;
+      // double d12 = p1.distance(p2);
+      // double d13 = p1.distance(p3);
+      // double d32 = p3.distance(p2);
+      // double maxDistance = Math.max(d12, Math.max(d13, d32));
+      // if(maxDistance == d13) {
+      //   circle = new Circle((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2, d13 / 2);
+      //   circle.setK(k + 1);
+      //   return circle;
+      // }
+      // if(maxDistance == d12) {
+      //   circle = new Circle((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2, d12 / 2);
+      //   circle.setK(k + 1);
+      //   return circle;
+      // }
+      // circle = new Circle((p3.X + p2.X) / 2, (p3.Y + p2.Y) / 2, d32 / 2);
+      // circle.setK(k + 1);
+      // return circle;
+      return null;
     }
 
     double s12 = (p2.Y - p1.Y) / (p2.X - p1.X);
@@ -76,13 +78,23 @@ public class Map {
           Circle potential = getCircle(points[a], points[b], points[c]);
           // System.out.println(potential);
           // System.out.println(potential.numberOfMembers(points));
-          if(potential.numberOfMembers(points) == potential.k - 2) {
+          if(potential != null && potential.numberOfMembers(points) == 9) {
             potentialCircles.add(potential);
             radiiToTry.add(potential.round(potential.r, 10));
           }
         }
+        // Calculate radius for colinear approach
+        Circle colinear = new Circle((points[a].X + points[b].X)/2,
+        (points[a].Y + points[b].Y)/2, points[a].distance(points[b])/2);
+        System.out.println(colinear.numberOfMembers(points));
+        if(colinear.numberOfMembers(points) == 9){
+          // add this radius to the TreeSet of potential solutions
+          System.out.println(colinear.r + "hi");
+          radiiToTry.add(colinear.round(colinear.r, 10));
+        }
       }
     }
+    System.out.println(radiiToTry);
     if(radiiToTry.size() > 0) return radiiToTry.first();
     return 0;
   }
