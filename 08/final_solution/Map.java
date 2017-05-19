@@ -12,15 +12,6 @@ public class Map {
     Scanner scanner;
     NUMBER_OF_POINTS = points.size();
     this.points = new Point[NUMBER_OF_POINTS];
-    // this.potentialCircles = new TreeSet<Circle>(new Comparator<Circle>(){
-    //   @Override
-    //   public int compare(Circle c1, Circle c2) {
-    //     if(c1.r > c2.r) return 1;
-    //     if(c1.r < c2.r) return -1;
-    //     else return 0;
-    //   }
-    // });
-
     this.radiiToTry = new TreeSet<Double>();
 
     int i = 0;
@@ -31,9 +22,7 @@ public class Map {
   }
 
   public Circle getCircle(Point p1, Point p2, Point p3) {
-
-
-    /* If points are collinear. */
+    /* If three points are collinear. */
     if(p1.X * (p2.Y - p3.Y) + p2.X * (p3.Y - p1.Y) + p3.X * (p1.Y - p2.Y) == 0) {
       return null;
     }
@@ -62,8 +51,8 @@ public class Map {
         for(int c = b + 1; c < NUMBER_OF_POINTS; c++) {
           Circle circleOfThree = getCircle(points[a], points[b], points[c]);
           if(circleOfThree != null && circleOfThree.numberOfMembers(points) == 9) {
-            System.out.println(circleOfThree);
-            System.out.println("made from: " + points[a] + " " + points[b] + " " + points[c]);
+            // System.out.println(circleOfThree);
+            // System.out.println("made from: " + points[a] + " " + points[b] + " " + points[c]);
             radiiToTry.add(circleOfThree.round(circleOfThree.r, 10));
           }
         }
