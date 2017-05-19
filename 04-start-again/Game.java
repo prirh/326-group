@@ -99,10 +99,10 @@ public class Game {
       int nextPeanut = moveScanner.nextInt();
       int nextPretzel = moveScanner.nextInt();
       if (peanutsLeft - nextPeanut < 0 || pretzelsLeft - nextPretzel < 0) continue;
-      String situation = nextPeanut + " " + nextPretzel + " " + peanutsLeft + " " + pretzelsLeft + " " + !turn;
+      String situation = nextPeanut + " " + nextPretzel + " " + peanutsLeft + " " + pretzelsLeft;
       if(memo.get(situation) != null) {
         if((memo.get(situation) && !turn) || (!memo.get(situation) && turn)) {
-          return !turn;
+          return false;
         }
       } else {
         boolean outcome = winningMove(peanutsLeft, nextPeanut, pretzelsLeft, nextPretzel, !turn);
