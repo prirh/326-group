@@ -58,7 +58,7 @@ public class Map {
         }
       }
     }
-    System.out.println(radiiToTry);
+    // System.out.println(radiiToTry);
     if(radiiToTry.size() > 0) return radiiToTry.first();
     return 0;
   }

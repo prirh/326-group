@@ -18,7 +18,7 @@ public class Circle {
     public int numberOfMembers(Point[] candidates) {
         int members = 0;
         for(Point candidate : candidates) {
-            if(center.distance(candidate) < r - 0.001) {
+            if(center.distance(candidate) < r - 0.00001) {
                 members++;
             }
         }
