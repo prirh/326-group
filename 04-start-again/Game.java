@@ -61,6 +61,7 @@ public class Game {
         addMoves(scanner.nextLine().trim());
       }
     }
+    System.out.println(moves);
   }
 
   /**
@@ -101,9 +102,10 @@ public class Game {
       if (peanutsLeft - nextPeanut < 0 || pretzelsLeft - nextPretzel < 0) continue;
       String situation = nextPeanut + " " + nextPretzel + " " + peanutsLeft + " " + pretzelsLeft + " " + !turn;
       if(memo.get(situation) != null) {
-        if((memo.get(situation) && !turn) || (!memo.get(situation) && turn)) {
-          return !turn;
-        }
+        // if((memo.get(situation) && !turn) || (!memo.get(situation) && turn)) {
+        //   return !turn;
+        // }
+        continue;
       } else {
         boolean outcome = winningMove(peanutsLeft, nextPeanut, pretzelsLeft, nextPretzel, !turn);
         memo.put(situation, outcome);
