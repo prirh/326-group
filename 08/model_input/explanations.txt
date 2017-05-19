@@ -1,0 +1,17 @@
+A_in.txt	13 objects	radius ~100.00
+Points arranged in a circle
+
+B_in.txt	13 objects	radius ~60.0
+Points in a straight line
+
+C_in.txt	13 objects	radius ~1000.00
+Three points forming a triangle, rest arranged in small circle to one side (preventing easy calculation of the ideal center)
+
+D_in.txt	13 objects	radius ~45.27
+Points arranged as 4 squares of (up to) four points at the points of an equal-armed cross
+
+E_in.txt	26 objects	radius ~100.00
+Circle within circle (100.00 and 297.00)
+
+F_in.txt	1026 objects	radius ~5.00
+Circle within circle (5.00 and 14.85) and 1000 random points at least 6 away from each other

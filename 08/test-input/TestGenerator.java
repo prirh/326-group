@@ -12,9 +12,9 @@ public class TestGenerator {
     public static void main(String[] args){
         System.out.println("Access points");
         /* POINTS AROUND A CIRCLE */
-        final Point ORIGIN = new Point(0, 0);
-        final double NUMBER_OF_POINTS = 15;
-        final double RADIUS = 20;
+        final Point ORIGIN = new Point(1250, 1433.012702);
+        final double NUMBER_OF_POINTS = 100;
+        final double RADIUS = 866.0254038;
         double slice = 360 / (NUMBER_OF_POINTS * 3);
         double t = 0;
         points = new Point[(int) NUMBER_OF_POINTS];

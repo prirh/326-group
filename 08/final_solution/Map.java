@@ -22,7 +22,6 @@ public class Map {
     // });
 
     this.radiiToTry = new TreeSet<Double>();
-    this.bestRadii = new TreeSet<Double>();
 
     int i = 0;
     for(String input : points) {
@@ -32,28 +31,12 @@ public class Map {
   }
 
   public Circle getCircle(Point p1, Point p2, Point p3) {
-    /* If points are collinear. */
-    Circle circle;
-    if(p1.X * (p2.Y - p3.Y) + p2.X * (p3.Y - p1.Y) + p3.X * (p1.Y - p2.Y) == 0) {
-      double d12 = p1.distance(p2);
-      double d13 = p1.distance(p3);
-      double d32 = p3.distance(p2);
-      double maxDistance = Math.max(d12, Math.max(d13, d32));
-      if(maxDistance == d13) {
-        circle = new Circle((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2, d13 / 2);
-        circle.setK(k + 1);
-        return circle;
-      }
-      if(maxDistance == d12) {
-        circle = new Circle((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2, d12 / 2);
-        circle.setK(k + 1);
-        return circle;
-      }
-      circle = new Circle((p3.X + p2.X) / 2, (p3.Y + p2.Y) / 2, d32 / 2);
-      circle.setK(k + 1);
-      return circle;
-    }
 
+
+    /* If points are collinear. */
+    if(p1.X * (p2.Y - p3.Y) + p2.X * (p3.Y - p1.Y) + p3.X * (p1.Y - p2.Y) == 0) {
+      return null;
+    }
     double s12 = (p2.Y - p1.Y) / (p2.X - p1.X);
     double s23 = (p3.Y - p2.Y) / (p3.X - p2.X);
 
@@ -62,26 +45,31 @@ public class Map {
 
     Point centre = new Point(x, y);
     double r = centre.distance(p1);
-    circle = new Circle(centre, r);
-    circle.setK(k);
+    Circle circle = new Circle(centre, r);
     return circle;
   }
 
   public double getMaxRadius() {
     for(int a = 0; a < NUMBER_OF_POINTS - 2; a++) {
       for(int b = a + 1; b < NUMBER_OF_POINTS - 1; b++) {
-          Circle circleOfTwo = 
+          Point center = new Point((points[a].X + points[b].X) / 2, (points[a].Y + points[b].Y) / 2);
+          Circle circleOfTwo = new Circle(center, points[a].distance(points[b]) / 2);
+          if(circleOfTwo.numberOfMembers(points) == 10) {
+            // System.out.println(circleOfTwo);
+            // System.out.println("made from: " + points[a] + " " + points[b]);
+            radiiToTry.add(circleOfTwo.round(circleOfTwo.r, 10));
+          }
         for(int c = b + 1; c < NUMBER_OF_POINTS; c++) {
           Circle circleOfThree = getCircle(points[a], points[b], points[c]);
-          // System.out.println(potential);
-          // System.out.println(potential.numberOfMembers(points));
-          if(potential.numberOfMembers(points) == potential.k - 2) {
-            // potentialCircles.add(potential);
-            radiiToTry.add(potential.round(potential.r, 10));
+          if(circleOfThree != null && circleOfThree.numberOfMembers(points) == 9) {
+            System.out.println(circleOfThree);
+            System.out.println("made from: " + points[a] + " " + points[b] + " " + points[c]);
+            radiiToTry.add(circleOfThree.round(circleOfThree.r, 10));
           }
         }
       }
     }
+    System.out.println(radiiToTry);
     if(radiiToTry.size() > 0) return radiiToTry.first();
     return 0;
   }
@@ -141,7 +129,7 @@ public class Map {
 
   public static void main(String[]args) {
     Scanner scan = new Scanner(System.in);
-    scan.nextLine();
+    // scan.nextLine();
     int numberOfPoints = 0;
     ArrayList<String> coords = new ArrayList<String>();
     while(scan.hasNextLine()){
