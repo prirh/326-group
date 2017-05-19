@@ -13,8 +13,6 @@
 #define PLUS 0
 #define TIMES 1
 
-
-
 /**
  * Memory allocation with error checking, exits if memory allocation fails.
  */
@@ -62,7 +60,7 @@ int solve_left_to_right(int *numbers, int size, int *operators, int total) {
  * and returns 1. If the expression does not evaluate to the target,
  * it returns 0;
  */
-int solve_normally(int *numbers, int size, int *operators, int total) {
+int solve_normally(int *numbers, int size,  *operators, int total) {
   int i, j, sum;
   int first = numbers[0];
   int *working = emalloc(size * sizeof working);
@@ -101,11 +99,11 @@ return 0;
  * solutions.
  */
 int main() {
-  int maxSize = 25;
-  int *numbers = emalloc(25 * sizeof numbers);
+  int maxSize = 50;
+  int *numbers = emalloc(50 * sizeof numbers);
   int number, total, bit, size, possible_combos, i, solutions;
   char order = '\0';
-  int *operators;
+  long *operators;
 
   while(!feof(stdin)){
     i = 0;

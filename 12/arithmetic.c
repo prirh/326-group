@@ -99,11 +99,11 @@ return 0;
  * solutions.
  */
 int main() {
-  int maxSize = 25;
-  int *numbers = emalloc(25 * sizeof numbers);
+  int maxSize = 50;
+  int *numbers = emalloc(50 * sizeof numbers);
   int number, total, bit, size, possible_combos, i, solutions;
   char order = '\0';
-  int *operators;
+  long *operators;
 
   while(!feof(stdin)){
     i = 0;

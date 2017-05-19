@@ -8,7 +8,7 @@ import java.lang.Math;
  *consisting of addition and multiplication and try to form the final input from it.
  *the program executes and checks these formed equations in a method determined by
  *the input character, left to right maths or normal maths.
- *
+ *@author Zac Gardner, Caleb Mitchell, Rhianne Price, Erina Jeffery
  **/
 public class Arith2{
     static int test=0;
@@ -32,21 +32,19 @@ public class Arith2{
         ArrayList<Long> halfTot = new ArrayList<Long>();
         String currPattern="";
         
-        
-        //reading in inputs and keeping the porgram in a loop until finished
-        //taking inputs.
+        //takes the input of numbers and answer
+
         while(s.hasNextLine()){
             input = s.nextLine();
             String[] splittedIn = input.split(" ");
             input = s.nextLine();
             inputs.clear();
             for(String x: splittedIn){
-                //System.out.println(x);
+
                 inputs.add(Long.valueOf(x));
             }
             
-            /*gets all values ready to maths to be done, including
-              splitting the method char from the final number*/
+           
             total = inputs.get(0);
             String[] splittedRes = input.split(" ");
             Double preMax =  new Double(Math.pow(2,inputs.size()-1));
@@ -56,9 +54,8 @@ public class Arith2{
             found =0;
             
             
-            // if Left to right maths, do the following.
-                       
-            
+         
+            // all the setup for the recursive solving below
             if(splittedRes[1].charAt(0) == 'N'){
                 System.out.println("here3");
                 long[] nums = new long[inputs.size()];
@@ -92,46 +89,56 @@ public class Arith2{
                 }
             }
 
-            //if normal maths do the following.
+          
             
                     
         }
     }
 
-
+    /**
+     * treeSolv recursivly solvers the normal equations of the input numbers
+     *to see if they can reach the answer give, shorcuts are taken where
+     *if all input numbers are positive, any further adition or multiplication
+     *will only make the total larger, meaning if the total is currently above
+     *the answer, it should go back and try a different combination.
+     *@arg nums a list of all the input numbers
+     *@arg i the current gap in numbers it is up to.
+     *@arg prenNum the previous number in the order
+     *@arg prePlus the previous total from the last plus operation
+     *@arg preTimes the previous total from the last times operation
+     *@arg total the current total being worked with
+     *@arg answer the answer that is trying to be reached
+     *@arg pattern the operations that have been used so far
+     **/
     public static int treeSolv(long[] nums,int i, long preNum, 
-		long prePlus, long preTimes, long total, long answer,String pattern){
-        //System.out.println("doing" + test++);
+                               long prePlus, long preTimes, long total,
+                               long answer,String pattern){
+   
         if(nums2[0]>=1 && i==0 && answer >total && pattern.indexOf('+')==1){
-            //System.out.println(pattern + " " + answer + " : " + total);
-            //System.out.println("Impossible");
+           
 	    System.out.println("Impossible N");
             System.exit(0);
         }
         if(total ==answer && i ==0){
-            // System.out.println(pattern + " " + answer + " : " + total);
-            //System.out.println("Found");
+            
+            System.out.print("N");
 	    for(int x=0;x<nums.length-1;x++){
-                System.out.print(nums[x]+" "+pattern.charAt(x));
+                System.out.print(" "+nums[x]+" "+pattern.charAt(x));
             }
-            System.out.println(nums[nums.length-1]);
+            System.out.println(" "+nums[nums.length-1]);
             return 1;
         }   
         else if(i==0){
-            //System.out.println(pattern + " " + answer + " : " + total);
-            //  System.out.println(pattern + ": " + total);
+           
             return 0;
         }
         long num =nums[nums.length-i];
         if(nums2[0] >=1 && total >answer){
-            // System.out.println(pattern + " " + answer + " : " + total);
             return 0;
-            
-            //System.out.pattern
         }
         
         
-        //System.out.println(i + ": " + preNum +": " + prePlus+": " + preTimes+": " + total+": " + answer);
+       
         String pat = pattern+ "+";
         String pat2 = pattern +"*";
         if(preTimes ==0){
@@ -152,37 +159,49 @@ public class Arith2{
         return 0;
     }
 
+    /**
+     * treeSolv recursivly solvers the left to right equations of
+     *the input numbers to see if they can reach the answer
+     *give, shorcuts are taken where if all input numbers are
+     *positive, any further adition or multiplication
+     *will only make the total larger, meaning if the total is currently above
+     *the answer, it should go back and try a different combination.
+     *@arg nums a list of all the input numbers
+     *@arg i the current gap in numbers it is up to.
+     *@arg total the current total being worked with
+     *@arg answer the answer that is trying to be reached
+     *@arg pattern the operations that have been used so far
+     **/
     public static int treeSolvL(long[] nums,int i, long total, long answer,String pattern){
-        //System.out.println("doing" + test++);
+        
         if(nums2[0]>=1 && i==0 && answer >total && pattern.indexOf('+')==1){
-            //System.out.println(pattern + " " + answer + " : " + total);
+           
             System.out.println("Impossible L");
             System.exit(0);
         }
         if(total ==answer && i ==0){
-            // System.out.println(pattern + " " + answer + " : " + total);
-            //System.out.println("Found");
+            
+            System.out.print("L");
             for(int x=0;x<nums.length-1;x++){
-                System.out.print(nums[x]+" "+pattern.charAt(x));
+                System.out.print(" "+nums[x]+" "+pattern.charAt(x));
             }
-            System.out.println(nums[nums.length-1]);
+            System.out.println(" "+nums[nums.length-1]);
             return 1;
         }   
         else if(i==0){
-            //System.out.println(pattern + " " + answer + " : " + total);
-            //System.out.println(pattern + ": " + total);
+            
             return 0;
         }
         long num =nums[nums.length-i];
         if(nums2[0] >=1 && total >answer){
-            // System.out.println(pattern + " " + answer + " : " + total);
+            
             return 0;
             
-            //System.out.pattern
+           
         }
         
         
-        //System.out.println(i + ": " + preNum +": " + prePlus+": " + preTimes+": " + total+": " + answer);
+        
         String pat = pattern+ "+";
         String pat2 = pattern +"*";
             
