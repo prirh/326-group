@@ -70,10 +70,13 @@ public class Circle {
         return maxDepth;
     }
 
-    private double leftDepth() {
+    public double leftDepth() {
         double depth = overlap;
+        // System.out.println(this);
+        // System.out.println(left);
+        // System.out.println(intersectingCircles.size());
         for(Point point : intersectingCircles) {
-            if(point.distance(left) <= r) {
+            if(point.distance(left) < r) {
                 depth++;
             }
         }
@@ -82,11 +85,11 @@ public class Circle {
 
     public void addIntersections(Point[] map) {
         for(Point point : map) {
-            if(point.getDistanceTo(center.LABEL) < 0.00001) {
+            if(point.LABEL == center.LABEL) {
                 overlap++;
                 continue;
             }
-            if(point.getDistanceTo(center.LABEL) <= 2 * r) {
+            if(point.getDistanceTo(center.LABEL) < 2 * r) {
                 intersectingCircles.add(point);
                 for(Point intersection : findIntersections(point)) {
                     if(intersection.Y >= center.Y) {
